@@ -21,33 +21,30 @@ int Monde::getMAX_Y()const{
 }
 
 void Monde::peuplement(){
-  vecteurAnimaux.resize(nbAnimaux);
+  bool j=true;
+  for (int i = 0; i < nbAnimaux; i++) {
+    if (j) {
+      vecteurAnimaux.push_back(Gazelle());
+    }else{
+      vecteurAnimaux.push_back(Lion());
+    }
+    j = !j;
+  }
   for (int i = 0; i < nbAnimaux; i++) {
     vecteurAnimaux[i].setX(rand()%MAX_X);
     vecteurAnimaux[i].setY(rand()%MAX_Y);
     vecteurAnimaux[i].setEnergie(rand()%100);
-    tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'A';
+    tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
   }
 }
 
 void Monde::afficher(){
   system("clear");
   system("clear");
-  char color[8];
-  std::string red("\033[1;31m");
-  std::string yellow ("\033[1;33m");
 
   for (size_t j = 0; j < MAX_Y; j++) {
     for (size_t i = 0; i < MAX_X; i++){
-
-      if (tabMonde[i][j] == 'A') {
-        red.copy(color, 8);
-      }
-      if (tabMonde[i][j] == 'X') {
-        yellow.copy(color, 8);
-      }
-
-      std::cout << color << tabMonde[i][j];
+      std::cout << tabMonde[i][j];
     }
     std::cout << '\n';
   }
@@ -61,28 +58,28 @@ void Monde::bouge(int i){
     if (vecteurAnimaux[i].getY()!=0) {
       tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
       vecteurAnimaux[i].setY(vecteurAnimaux[i].getY()-1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'A';
+      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
     }
     break;
     case 1: //Q
     if (vecteurAnimaux[i].getX()!=0) {
       tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
       vecteurAnimaux[i].setX(vecteurAnimaux[i].getX()-1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'A';
+      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
     }
     break;
     case 2: //S
     if (vecteurAnimaux[i].getY()!=MAX_Y-1) {
       tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
       vecteurAnimaux[i].setY(vecteurAnimaux[i].getY()+1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'A';
+      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
     }
     break;
     case 3: //D
     if (vecteurAnimaux[i].getX()!=MAX_X-1) {
       tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
       vecteurAnimaux[i].setX(vecteurAnimaux[i].getX()+1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'A';
+      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
     }
     break;
   }

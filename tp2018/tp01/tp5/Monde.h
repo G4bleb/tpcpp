@@ -4,8 +4,8 @@
 #define MONDE_H
 class Monde{
 private:
-  static const int MAX_X = 100;
-  static const int MAX_Y = 50;
+  static const int MAX_X = 70;
+  static const int MAX_Y = 30;
   int nbAnimaux;
   char tabMonde[MAX_X][MAX_Y];
   std::vector<Animal> vecteurAnimaux;
