@@ -11,7 +11,7 @@ public:
   int getX() const;
   int getY() const;
   int getEnergie() const;
-  char getType() const;
+  virtual char getType() const = 0;
   void setX(const int xset);
   void setY(const int yset);
   void setEnergie(const int enerset);
@@ -30,6 +30,7 @@ private:
 public:
   Lion(){type='L';}
   ~Lion(){}
+  char getType()const;
   void afficher();
 };
 
@@ -38,6 +39,7 @@ private:
 public:
   Gazelle(){type='G';}
   ~Gazelle(){}
+  char getType()const;
   void afficher();
 };
 

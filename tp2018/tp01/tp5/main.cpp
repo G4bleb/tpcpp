@@ -16,9 +16,9 @@ int main(){
     }
     leMonde.afficher();
   }
-  Lion un_lion;
-  Gazelle une_gazelle;
-  un_lion.afficher();
-  une_gazelle.afficher();
+  // Lion un_lion;
+  // Gazelle une_gazelle;
+  // un_lion.afficher();
+  // une_gazelle.afficher();
   return 0;
 }

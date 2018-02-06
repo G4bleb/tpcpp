@@ -8,7 +8,7 @@ private:
   static const int MAX_Y = 30;
   int nbAnimaux;
   char tabMonde[MAX_X][MAX_Y];
-  std::vector<Animal> vecteurAnimaux;
+  std::vector<Animal*> vecteurAnimaux;
 public:
   Monde(int nbAnim=0);
   int getMAX_X() const;

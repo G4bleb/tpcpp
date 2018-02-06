@@ -24,17 +24,17 @@ void Monde::peuplement(){
   bool j=true;
   for (int i = 0; i < nbAnimaux; i++) {
     if (j) {
-      vecteurAnimaux.push_back(Gazelle());
+      vecteurAnimaux.push_back(new Gazelle());
     }else{
-      vecteurAnimaux.push_back(Lion());
+      vecteurAnimaux.push_back(new Lion());
     }
     j = !j;
   }
   for (int i = 0; i < nbAnimaux; i++) {
-    vecteurAnimaux[i].setX(rand()%MAX_X);
-    vecteurAnimaux[i].setY(rand()%MAX_Y);
-    vecteurAnimaux[i].setEnergie(rand()%100);
-    tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
+    vecteurAnimaux[i]->setX(rand()%MAX_X);
+    vecteurAnimaux[i]->setY(rand()%MAX_Y);
+    vecteurAnimaux[i]->setEnergie(rand()%100);
+    tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
   }
 }
 
@@ -52,34 +52,34 @@ void Monde::afficher(){
 }
 
 void Monde::bouge(int i){
-  vecteurAnimaux[i].setEnergie(vecteurAnimaux[i].getEnergie()-1);
+  vecteurAnimaux[i]->setEnergie(vecteurAnimaux[i]->getEnergie()-1);
   switch (rand()%4) {
     case 0: //Z
-    if (vecteurAnimaux[i].getY()!=0) {
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
-      vecteurAnimaux[i].setY(vecteurAnimaux[i].getY()-1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
+    if (vecteurAnimaux[i]->getY()!=0) {
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
+      vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()-1);
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 1: //Q
-    if (vecteurAnimaux[i].getX()!=0) {
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
-      vecteurAnimaux[i].setX(vecteurAnimaux[i].getX()-1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
+    if (vecteurAnimaux[i]->getX()!=0) {
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
+      vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()-1);
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 2: //S
-    if (vecteurAnimaux[i].getY()!=MAX_Y-1) {
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
-      vecteurAnimaux[i].setY(vecteurAnimaux[i].getY()+1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
+    if (vecteurAnimaux[i]->getY()!=MAX_Y-1) {
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
+      vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()+1);
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 3: //D
-    if (vecteurAnimaux[i].getX()!=MAX_X-1) {
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = ' ';
-      vecteurAnimaux[i].setX(vecteurAnimaux[i].getX()+1);
-      tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = vecteurAnimaux[i].getType();
+    if (vecteurAnimaux[i]->getX()!=MAX_X-1) {
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
+      vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()+1);
+      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
   }
@@ -88,7 +88,7 @@ void Monde::bouge(int i){
 int Monde::passeuntour(){
   for (int i = 0; i < nbAnimaux; i++) {
     bouge(i);
-    if (vecteurAnimaux[i].getEnergie()<=0) {
+    if (vecteurAnimaux[i]->getEnergie()<=0) {
       mort(i);
       i--;
     }
@@ -101,7 +101,7 @@ int Monde::passeuntour(){
 }
 
 void Monde::mort(int i){
-  tabMonde[vecteurAnimaux[i].getX()][vecteurAnimaux[i].getY()] = 'X';
+  tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = 'X';
   vecteurAnimaux.erase(vecteurAnimaux.begin()+i);
   nbAnimaux = static_cast<int>(vecteurAnimaux.size());
 }
