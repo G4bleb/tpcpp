@@ -1,4 +1,4 @@
-#include "Point.h"
+#include "Point.hpp"
 using namespace std;
 int Point::nbpoints=0;
 Point::Point():x(0),y(0){

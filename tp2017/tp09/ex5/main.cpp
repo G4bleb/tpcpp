@@ -1,8 +1,8 @@
 /*
 
-Programme produit le  par Gabriel LEBIS
+Programme produit le 10/11/17 par Gabriel LEBIS
 */
-#include "Point.h"
+#include "Point.hpp"
 using namespace std;
 const int TAILLE=100;
 int main(){

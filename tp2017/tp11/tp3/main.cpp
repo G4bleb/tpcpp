@@ -1,8 +1,8 @@
 /*
 
-Programme produit le  par Gabriel LEBIS
+Programme produit le 8/12/17 par Gabriel LEBIS
 */
-#include "Animal.h"
+#include "Animal.hpp"
 using namespace std;
 
 int main(){

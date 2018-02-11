@@ -1,4 +1,4 @@
-#include "Animal.h"
+#include "Animal.hpp"
 using namespace std;
 int Animal::nbAnimaux=0;
 
