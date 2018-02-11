@@ -2,7 +2,7 @@
 
 Programme produit le  par Gabriel LEBIS
 */
-#include "Monde.h"
+#include "Monde.hpp"
 
 int main(){
   srand(static_cast<unsigned int>(time(NULL)));
