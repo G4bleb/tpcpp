@@ -6,15 +6,14 @@ Programme produit le  par Gabriel LEBIS
 
 int main(){
   srand(static_cast<unsigned int>(time(NULL)));
-  Monde leMonde(50);
+  Monde leMonde(100);
   leMonde.peuplement();
 
-  for (size_t i = 1; i > 0; i++) {
+  for (; true;) {
+    leMonde.afficher();
     if(!leMonde.passeuntour()){
-      leMonde.afficher();
       return 0;
     }
-    leMonde.afficher();
   }
   // Lion un_lion;
   // Gazelle une_gazelle;

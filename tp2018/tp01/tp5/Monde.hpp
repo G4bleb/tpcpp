@@ -4,9 +4,10 @@
 #define MONDE_H
 class Monde{
 private:
-  static const int MAX_X = 70;
-  static const int MAX_Y = 30;
+  static const int MAX_X = 80;
+  static const int MAX_Y = 40;
   int nbAnimaux;
+  unsigned int victimes;
   char tabMonde[MAX_X][MAX_Y];
   std::vector<Animal*> vecteurAnimaux;
 public:
@@ -15,8 +16,9 @@ public:
   int getMAX_Y() const;
   void peuplement();
   void afficher();
-  void bouge(int i);
-  int passeuntour();
+  bool bouge(int i);
+  bool passeuntour();
   void mort(int i);
+  void mange(const int i);
 };
 #endif

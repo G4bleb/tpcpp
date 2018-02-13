@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string>
 Monde::Monde(int nbAnim){
+  victimes=0;
   nbAnimaux=nbAnim;
   for (size_t j = 0; j < MAX_Y; j++) {
     for (size_t i = 0; i < MAX_X; i++) {
@@ -48,46 +49,53 @@ void Monde::afficher(){
     }
     std::cout << '\n';
   }
-  usleep(100000);
+  // usleep(100000);
+  getchar();
 }
 
-void Monde::bouge(int i){
+bool Monde::bouge(int i){
+  bool nourri = false;
   vecteurAnimaux[i]->setEnergie(vecteurAnimaux[i]->getEnergie()-1);
   switch (rand()%4) {
     case 0: //Z
-    if (vecteurAnimaux[i]->getY()!=0) {
+    if (vecteurAnimaux[i]->getY()!=0 && (tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()-1]==' ' || (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()-1] == 'G'))) {
       tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
       vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()-1);
-      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 1: //Q
-    if (vecteurAnimaux[i]->getX()!=0) {
+    if (vecteurAnimaux[i]->getX()!=0 && (tabMonde[vecteurAnimaux[i]->getX()-1][vecteurAnimaux[i]->getY()]==' '  || (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()-1][vecteurAnimaux[i]->getY()] == 'G'))) {
       tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
       vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()-1);
-      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 2: //S
-    if (vecteurAnimaux[i]->getY()!=MAX_Y-1) {
+    if (vecteurAnimaux[i]->getY()!=MAX_Y-1 && (tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()+1]==' '  || (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()+1] == 'G'))) {
       tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
       vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()+1);
-      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
     case 3: //D
-    if (vecteurAnimaux[i]->getX()!=MAX_X-1) {
+    if (vecteurAnimaux[i]->getX()!=MAX_X-1 && (tabMonde[vecteurAnimaux[i]->getX()+1][vecteurAnimaux[i]->getY()]==' '  || (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()+1][vecteurAnimaux[i]->getY()] == 'G'))) {
       tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
       vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()+1);
-      tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
     }
     break;
   }
+  if (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] == 'G') {
+    mange(i);
+    nourri = true;
+  }
+  tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = vecteurAnimaux[i]->getType();
+  return nourri;
 }
 
-int Monde::passeuntour(){
+bool Monde::passeuntour(){
   for (int i = 0; i < nbAnimaux; i++) {
-    bouge(i);
+    if (bouge(i)) {
+      victimes++;
+      i--;
+    }
     if (vecteurAnimaux[i]->getEnergie()<=0) {
       mort(i);
       i--;
@@ -95,13 +103,23 @@ int Monde::passeuntour(){
   }
 
   if (!nbAnimaux) {
-    return 0;
+    std::cout << "Victimes : "<< victimes << std::endl;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 void Monde::mort(int i){
   tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = 'X';
   vecteurAnimaux.erase(vecteurAnimaux.begin()+i);
   nbAnimaux = static_cast<int>(vecteurAnimaux.size());
+}
+
+void Monde::mange(const int i){
+  for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimaux); j++) {
+    if (vecteurAnimaux[i]->getType() == 'L' && vecteurAnimaux[j]->getType() == 'G' && vecteurAnimaux[j]->getX() == vecteurAnimaux[i]->getX() && vecteurAnimaux[j]->getY() == vecteurAnimaux[i]->getY()) {
+      vecteurAnimaux.erase(vecteurAnimaux.begin()+j);
+      nbAnimaux = static_cast<int>(vecteurAnimaux.size());
+    }
+  }
 }
