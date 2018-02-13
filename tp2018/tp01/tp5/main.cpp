@@ -12,6 +12,7 @@ int main(){
   for (; true;) {
     leMonde.afficher();
     if(!leMonde.passeuntour()){
+      // leMonde.afficher();
       return 0;
     }
   }

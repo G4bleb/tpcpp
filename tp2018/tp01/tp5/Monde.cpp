@@ -49,8 +49,8 @@ void Monde::afficher(){
     }
     std::cout << '\n';
   }
-  // usleep(100000);
-  getchar();
+  usleep(80000);
+  // getchar();
 }
 
 bool Monde::bouge(int i){
@@ -118,6 +118,7 @@ void Monde::mort(int i){
 void Monde::mange(const int i){
   for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimaux); j++) {
     if (vecteurAnimaux[i]->getType() == 'L' && vecteurAnimaux[j]->getType() == 'G' && vecteurAnimaux[j]->getX() == vecteurAnimaux[i]->getX() && vecteurAnimaux[j]->getY() == vecteurAnimaux[i]->getY()) {
+      vecteurAnimaux[i]->setEnergie(vecteurAnimaux[i]->getEnergie()+vecteurAnimaux[j]->getEnergie());
       vecteurAnimaux.erase(vecteurAnimaux.begin()+j);
       nbAnimaux = static_cast<int>(vecteurAnimaux.size());
     }
