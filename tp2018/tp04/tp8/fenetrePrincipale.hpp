@@ -22,7 +22,7 @@ class FenetrePrincipale : public QMainWindow {
 		QGraphicsView *myview;
 	private:
 		QWidget *widget_general;
-		QMenu *menuFichier;
+		// QMenu *menuFichier;
 	public slots:
 };
 

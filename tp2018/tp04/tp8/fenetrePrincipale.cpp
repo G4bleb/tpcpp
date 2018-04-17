@@ -10,7 +10,7 @@ FenetrePrincipale::FenetrePrincipale() : QMainWindow() {
   //exemple de creation d'une zone ou mettre boutons...
   qbl_general->addWidget(BuildGroupBoxControle());
   // exemple de création d'un menu
-  menuFichier = menuBar()->addMenu(tr("&Fichier"));
+  // menuFichier = menuBar()->addMenu(tr("&Fichier"));
 
 
   myscene = new MyScene(this);
