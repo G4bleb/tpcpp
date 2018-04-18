@@ -17,7 +17,7 @@ class FenetrePrincipale : public QMainWindow {
 	public:
 		FenetrePrincipale();
 		~FenetrePrincipale();
-		QGroupBox *BuildGroupBoxControle();
+		// QGroupBox *BuildGroupBoxControle();
 		MyScene *myscene;
 		QGraphicsView *myview;
 	private:

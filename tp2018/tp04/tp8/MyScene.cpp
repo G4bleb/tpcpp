@@ -4,20 +4,20 @@ MyScene::MyScene(QObject *parent) : QGraphicsScene(parent){
   wayToMovePaddleP1 = 0;
   wayToMovePaddleP2 = 0;
   ballSpeedX = 8;
-  ballSpeedY = 4;
+  ballSpeedY = 0;
   startTimer = 0;
   scoreCountP1 = 0;
   scoreCountP2 = 0;
   this->setBackgroundBrush(Qt::black);
-  paddleP1 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleLength));
+  paddleP1 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleHeight));
   this->addItem(paddleP1);
-  paddleP1->setPos(10+paddleWidth, windowHeight/2-paddleLength/2);
+  paddleP1->setPos(10+paddleWidth, windowHeight/2-paddleHeight/2);
 
-  paddleP2 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleLength));
+  paddleP2 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleHeight));
   this->addItem(paddleP2);
-  paddleP2->setPos(windowWidth-10-paddleWidth, windowHeight/2-paddleLength/2);
+  paddleP2->setPos(windowWidth-10-paddleWidth, windowHeight/2-paddleHeight/2);
 
-  line = new QGraphicsLineItem((paddleP2->x()+paddleP1->x())/2+paddleWidth/5, 0, (paddleP2->x()+paddleP1->x())/2+paddleWidth/5, windowHeight);
+  line = new QGraphicsLineItem((paddleP2->x()+paddleP1->x())/2, 0, (paddleP2->x()+paddleP1->x())/2, windowHeight);
   line->setPen(QPen(Qt::white));
   this->addItem(line);
 
@@ -27,10 +27,12 @@ MyScene::MyScene(QObject *parent) : QGraphicsScene(parent){
 
   scoreBoardP1 = new QGraphicsTextItem(QString::number(scoreCountP1));
   scoreBoardP1->setPos(this->width()/3,this->height()/2);
+  scoreBoardP1->setScale(2);
   this->addItem(scoreBoardP1);
 
   scoreBoardP2 = new QGraphicsTextItem(QString::number(scoreCountP2));
   scoreBoardP2->setPos(this->width()/3*2,this->height()/2);
+  scoreBoardP2->setScale(2);
   this->addItem(scoreBoardP2);
 
   timer = new QTimer(this);
@@ -44,9 +46,15 @@ void MyScene::update(){
     startTimer++;
   }else{
   if (paddleP1->collidesWithItem(pinball)) {
-    ballSpeedX = abs(ballSpeedX);
+    float bounceAngle = ((paddleP1->y()+(paddleHeight/2)) - (pinball->y()+(pinballSize/2)))/(paddleHeight/2)*maxBounceAngle;
+    ballSpeedX = maxBallSpeed*cos(bounceAngle);
+    ballSpeedY = -maxBallSpeed*sin(bounceAngle);
+    // ballSpeedX = abs(ballSpeedX);
   }else if (paddleP2->collidesWithItem(pinball)) {
-    ballSpeedX = -abs(ballSpeedX);
+    float bounceAngle = ((paddleP2->y()+(paddleHeight/2)) - (pinball->y()+(pinballSize/2)))/(paddleHeight/2)*maxBounceAngle;
+    // ballSpeedX = -abs(ballSpeedX);
+    ballSpeedX = -maxBallSpeed*cos(bounceAngle);
+    ballSpeedY = -maxBallSpeed*sin(bounceAngle);
   }
   if (pinball->y()<0 || pinball->y()>windowHeight-pinballSize) {
     ballSpeedY = -ballSpeedY;
@@ -56,12 +64,16 @@ void MyScene::update(){
   if (pinball->x()>windowWidth) {
     scoreCountP1++;
     scoreBoardP1->setPlainText(QString::number(scoreCountP1));
-    pinball->setPos(this->width()/2,this->height()/2);
+    pinball->setPos(this->width()/2-pinballSize/2,this->height()/2-pinballSize/2);
+    ballSpeedY=0;
+    ballSpeedX=maxBallSpeed;
     startTimer=0;
   }else if(pinball->x()<0){
     scoreCountP2++;
     scoreBoardP2->setPlainText(QString::number(scoreCountP2));
-    pinball->setPos(this->width()/2,this->height()/2);
+    pinball->setPos(this->width()/2-pinballSize/2,this->height()/2-pinballSize/2);
+    ballSpeedY=0;
+    ballSpeedX=-maxBallSpeed;
     startTimer=0;
   }
 }
@@ -99,14 +111,14 @@ void MyScene::keyReleaseEvent(QKeyEvent *ev){
 }
 
 void MyScene::movePaddles() {
-  if (wayToMovePaddleP1 && paddleP1->y()-paddleSpeed*wayToMovePaddleP1 < windowHeight-paddleLength && paddleP1->y()-paddleSpeed*wayToMovePaddleP1 > 0) {
+  if (wayToMovePaddleP1 && paddleP1->y()-paddleSpeed*wayToMovePaddleP1 < windowHeight-paddleHeight && paddleP1->y()-paddleSpeed*wayToMovePaddleP1 > 0) {
 
     paddleP1->setPos(paddleP1->x(), paddleP1->y()-paddleSpeed*wayToMovePaddleP1);
-    qDebug() << "PaddleP1 x : " << paddleP1->x() << " PaddleP1 y : " << paddleP1->y();
+    // qDebug() << "PaddleP1 x : " << paddleP1->x() << " PaddleP1 y : " << paddleP1->y();
   }
-  if (wayToMovePaddleP2  && paddleP2->y()-paddleSpeed*wayToMovePaddleP2 < windowHeight-paddleLength && paddleP2->y()-paddleSpeed*wayToMovePaddleP2 > 0) {
+  if (wayToMovePaddleP2  && paddleP2->y()-paddleSpeed*wayToMovePaddleP2 < windowHeight-paddleHeight && paddleP2->y()-paddleSpeed*wayToMovePaddleP2 > 0) {
 
     paddleP2->setPos(paddleP2->x(), paddleP2->y()-paddleSpeed*wayToMovePaddleP2);
-    qDebug() << "PaddleP2 x : " << paddleP2->x() << " PaddleP2 y : " << paddleP2->y();
+    // qDebug() << "PaddleP2 x : " << paddleP2->x() << " PaddleP2 y : " << paddleP2->y();
   }
 }

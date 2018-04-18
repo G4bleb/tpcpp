@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-#include <string>
 Monde::Monde(int nbAnim){
   victimes=0;
   nbAnimaux=nbAnim;

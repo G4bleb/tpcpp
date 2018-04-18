@@ -10,9 +10,9 @@ int main() {
   leMonde.peuplement();
 
   for (;;) {
-    // leMonde.afficher();
+    leMonde.afficher();
     if (!leMonde.passeuntour()) {
-      // leMonde.afficher();
+      leMonde.afficher();
       std::cout << "Victimes : "<< leMonde.getVictimes() << std::endl;
       return 0;
     }

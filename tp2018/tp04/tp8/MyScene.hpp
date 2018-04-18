@@ -4,12 +4,15 @@
 #include <QtWidgets>
 #include <cmath>
 
-const int paddleSpeed = 5;
+const int paddleSpeed = 8;
 const int paddleWidth = 30;
-const int paddleLength = 150;
+const int paddleHeight = 150;
 const int windowWidth = 800;
 const int windowHeight = 600;
 const int pinballSize = 60;
+const int maxBallSpeed = 12;
+const float pi = 3.14159265358979323846;
+const float maxBounceAngle = 4*pi/12;
 
 class MyScene : public QGraphicsScene {
 	Q_OBJECT
