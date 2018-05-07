@@ -23,7 +23,5 @@ public:
   void mange(const int i);
   void getEaten(const int i);
   char checkForObstacle(short dir, Animal *anim);
-  bool isPredator(short dir, Animal *anim);
-  bool isPrey(short dir, Animal *anim);
 };
 #endif

@@ -61,37 +61,37 @@ bool Monde::bouge(int i){
   vecteurAnimaux[i]->setEnergie(vecteurAnimaux[i]->getEnergie()-1);
   switch (rand()%4) {
     case 0: //Z
-    if (vecteurAnimaux[i]->getY()!=0) {
-      if (checkForObstacle(0, vecteurAnimaux[i])==' ' || isPredator(0, vecteurAnimaux[i]) || isPrey(0, vecteurAnimaux[i])) {
+    // if (vecteurAnimaux[i]->getY()!=0) {
+      if (checkForObstacle(0, vecteurAnimaux[i])) {
         tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
         vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()-1);
       }
-    }
+    // }
     break;
     case 1: //Q
-    if (vecteurAnimaux[i]->getX()!=0) {
-      if (checkForObstacle(1, vecteurAnimaux[i])==' ' || isPredator(1, vecteurAnimaux[i]) || isPrey(1, vecteurAnimaux[i])) {
+    // if (vecteurAnimaux[i]->getX()!=0) {
+      if (checkForObstacle(1, vecteurAnimaux[i])) {
         tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
         vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()-1);
       }
-    }
+    // }
 
     break;
     case 2: //S
-    if (vecteurAnimaux[i]->getY()!=MAX_Y-1) {
-      if (checkForObstacle(2, vecteurAnimaux[i])==' ' || isPredator(2, vecteurAnimaux[i]) || isPrey(2, vecteurAnimaux[i])) {
+    // if (vecteurAnimaux[i]->getY()!=MAX_Y-1) {
+      if (checkForObstacle(2, vecteurAnimaux[i])) {
         tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
         vecteurAnimaux[i]->setY(vecteurAnimaux[i]->getY()+1);
       }
-    }
+    // }
     break;
     case 3: //D
-    if (vecteurAnimaux[i]->getX()!=MAX_X-1) {
-      if (checkForObstacle(3, vecteurAnimaux[i])==' ' || isPredator(3, vecteurAnimaux[i]) || isPrey(3, vecteurAnimaux[i])) {
+    // if (vecteurAnimaux[i]->getX()!=MAX_X-1) {
+      if (checkForObstacle(3, vecteurAnimaux[i])) {
         tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] = ' ';
         vecteurAnimaux[i]->setX(vecteurAnimaux[i]->getX()+1);
       }
-    }
+    // }
     break;
   }
   if (vecteurAnimaux[i]->getType() == 'L' && tabMonde[vecteurAnimaux[i]->getX()][vecteurAnimaux[i]->getY()] == 'G') {
@@ -180,58 +180,6 @@ char Monde::checkForObstacle(short dir, Animal *anim){
     case 3: //D
     if (anim->getX()!=MAX_X-1  || (anim->getType() == 'L' && tabMonde[anim->getX()+1][anim->getY()] == 'G')) {
       return tabMonde[anim->getX()+1][anim->getY()];
-    }
-    break;
-  }
-  return false;
-}
-
-bool Monde::isPredator(short dir, Animal *anim){
-  switch (dir) {
-    case 0: //Z
-    if (anim->getType() == 'L' && tabMonde[anim->getX()][anim->getY()-1] == 'G') {
-      return true;
-    }
-    break;
-    case 1: //Q
-    if (anim->getType() == 'L' && tabMonde[anim->getX()-1][anim->getY()] == 'G') {
-      return true;
-    }
-    break;
-    case 2: //S
-    if (anim->getType() == 'L' && tabMonde[anim->getX()][anim->getY()+1] == 'G') {
-      return true;
-    }
-    break;
-    case 3: //D
-    if (anim->getType() == 'L' && tabMonde[anim->getX()+1][anim->getY()] == 'G') {
-      return true;
-    }
-    break;
-  }
-  return false;
-}
-
-bool Monde::isPrey(short dir, Animal *anim){
-  switch (dir) {
-    case 0: //Z
-    if (anim->getType() == 'G' && tabMonde[anim->getX()][anim->getY()-1] == 'L') {
-      return true;
-    }
-    break;
-    case 1: //Q
-    if (anim->getType() == 'G' && tabMonde[anim->getX()-1][anim->getY()] == 'L') {
-      return true;
-    }
-    break;
-    case 2: //S
-    if (anim->getType() == 'G' && tabMonde[anim->getX()][anim->getY()+1] == 'L') {
-      return true;
-    }
-    break;
-    case 3: //D
-    if (anim->getType() == 'G' && tabMonde[anim->getX()+1][anim->getY()] == 'L') {
-      return true;
     }
     break;
   }
