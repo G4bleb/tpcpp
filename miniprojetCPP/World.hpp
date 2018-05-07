@@ -5,22 +5,22 @@
 #define MONDE_H
 class World{
 private:
-  static const int MAX_X = 30;
-  static const int MAX_Y = 20;
+  unsigned int worldX;
+  unsigned int worldY;
   unsigned int nbAnimals;
   unsigned int victims;
-  char tabWorld[MAX_X][MAX_Y];
+  char** tabWorld;
   std::vector<Animal*> vectorAnimals;
-  std::stack<int> animalsDying;
+  std::stack<unsigned int> animalsDying;
 public:
-  World(int nbAnim=0);
-  int getMAX_X() const;
-  int getMAX_Y() const;
-  unsigned int getVictims();
-  unsigned int getNbAnimals();
-  char getAnimalType(unsigned int i);
-  int getAnimalX(unsigned int i);
-  int getAnimalY(unsigned int i);
+  World(int setNbAnimals, int setWorldX, int setWorldY);
+  unsigned int getWorldX() const;
+  unsigned int getWorldY() const;
+  unsigned int getVictims() const;
+  unsigned int getNbAnimals() const;
+  char getAnimalType(unsigned int i) const;
+  unsigned int getAnimalX(unsigned int i) const;
+  unsigned int getAnimalY(unsigned int i) const;
   void spawning();
   void display();
   bool move(int i);

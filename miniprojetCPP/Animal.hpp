@@ -8,13 +8,13 @@ public:
   // Animal();
   Animal(int initx = 0, int inity=0, int initEnergy=100);
   ~Animal();
-  int getX() const;
-  int getY() const;
-  int getEnergy() const;
+  unsigned int getX() const;
+  unsigned int getY() const;
+  unsigned int getEnergy() const;
   virtual char getType() const = 0;
-  void setX(const int xset);
-  void setY(const int yset);
-  void setEnergy(const int enerset);
+  void setX(const unsigned int xset);
+  void setY(const unsigned int yset);
+  void setEnergy(const unsigned int enerset);
   void setType(const char typeset);
   void display();
 private:

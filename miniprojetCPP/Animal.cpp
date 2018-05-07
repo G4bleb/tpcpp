@@ -10,14 +10,14 @@ Animal::Animal(int initx, int inity, int initEnergy){
 Animal::~Animal(){
 }
 
-int Animal::getX() const{return x;}
-int Animal::getY() const{return y;}
-int Animal::getEnergy() const{return energy;}
+unsigned int Animal::getX() const{return x;}
+unsigned int Animal::getY() const{return y;}
+unsigned int Animal::getEnergy() const{return energy;}
 char Animal::getType() const{return type;}
 
-void Animal::setX(const int xset){x=xset;}
-void Animal::setY(const int yset){y=yset;}
-void Animal::setEnergy(const int enerset){energy=enerset;}
+void Animal::setX(const unsigned int xset){x=xset;}
+void Animal::setY(const unsigned int yset){y=yset;}
+void Animal::setEnergy(const unsigned int enerset){energy=enerset;}
 
 void Animal::setType(const char typeset){type=typeset;}
 

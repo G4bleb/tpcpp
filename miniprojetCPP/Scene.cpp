@@ -2,15 +2,15 @@
 #include "World.hpp"
 Scene::Scene(QObject *parent) : QGraphicsScene(parent){
   // this->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
-  startTimer = 0;
   this->setBackgroundBrush(Qt::lightGray);
 
-  sceneWorld = new World(30);
+  sceneWorld = new World(30, 30, 20);
   worldEnded = false;
   sceneWorld->spawning();
 
-  this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getMAX_X(),ANIMAL_SIZE*sceneWorld->getMAX_Y());
+  this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getWorldX(),ANIMAL_SIZE*sceneWorld->getWorldY());
   this->addRect(this->sceneRect(), QPen(Qt::black), Qt::white);
+  // this->addRect(this->sceneRect(), QPen(Qt::black), QBrush(QPixmap("sand.jpg")));
   std::cout << "getting into for" << '\n';
   for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
     if (sceneWorld->getAnimalType(i) == 'L') {
@@ -22,12 +22,8 @@ Scene::Scene(QObject *parent) : QGraphicsScene(parent){
     this->addItem(graphAnimals[i]);
   }
 
-  // paddleP1 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleHeight));
-  // paddleP1->setPos(10+paddleWidth, windowHeight/2-paddleHeight/2);
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(step()));
-  // timer->start(17);
-  timer->start(300);
 }
 
 void Scene::step(){
@@ -37,9 +33,9 @@ void Scene::step(){
     // sceneWorld->display();
     for (int i = 0; sceneWorld->hasAnimalDied(i);) {
       // std::cout << i << " died" << '\n';
-      // this->removeItem(graphAnimals[i]);
-      graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));
-      this->update();
+      this->removeItem(graphAnimals[i]);
+      // graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));
+      // this->update();
       graphAnimals.erase(graphAnimals.begin()+i);
     }
     for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
@@ -47,5 +43,12 @@ void Scene::step(){
       this->update();
       // std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
     }
+  }else{
+    // QApplication::quit();
   }
+}
+
+void Scene::startup(int msTickRate){
+  // timer->start(17);
+  timer->start(msTickRate);
 }

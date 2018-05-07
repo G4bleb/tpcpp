@@ -7,10 +7,12 @@
 #include <QColor>
 #include <QMenuBar>
 #include <QKeySequence>
-#include <QGroupBox>
+// #include <QGroupBox>
 #include <QGraphicsView>
 #include <QTimer>
-#include <QColor>
+#include <QSlider>
+#include <QCheckBox>
+
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -18,12 +20,19 @@ class MainWindow : public QMainWindow {
 		MainWindow();
 		~MainWindow();
 		// QGroupBox *BuildGroupBoxControle();
+		QPushButton * startButton;
+		QPushButton * exitButton;
 		Scene *myscene;
 		QGraphicsView *myview;
+		QSlider *tickSlider;
+		QCheckBox *fullscreenCheckBox;
 	private:
 		QWidget *widget_general;
 		// QMenu *menuFichier;
 	public slots:
+	void slot_startButton();
+  void slot_exitButton();
+	void slot_fullscreenCheckBox(bool state);
 };
 
 #endif

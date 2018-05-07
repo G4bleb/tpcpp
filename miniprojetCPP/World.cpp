@@ -2,57 +2,67 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-World::World(int nbAnim){
+World::World(int setNbAnimals, int setWorldX, int setWorldY){
   victims=0;
-  nbAnimals=nbAnim;
-  for (size_t j = 0; j < MAX_Y; j++) {
-    for (size_t i = 0; i < MAX_X; i++) {
-      tabWorld[i][j] = ' ';
+  nbAnimals=setNbAnimals;
+  worldX=setWorldX;
+  worldY=setWorldY;
+
+  tabWorld = new char*[worldX];
+  for (size_t j = 0; j < worldX; j++) {
+    tabWorld[j] = new char[worldY];
+    for (size_t i = 0; i < worldY; i++) {
+      tabWorld[j][i] = ' ';
     }
   }
 }
 
-int World::getMAX_X()const{
-  return MAX_X;
+unsigned int World::getWorldX()const{
+  return worldX;
 }
 
-int World::getMAX_Y()const{
-  return MAX_Y;
+unsigned int World::getWorldY()const{
+  return worldY;
 }
 
-unsigned int World::getVictims(){
+unsigned int World::getVictims()const{
   return victims;
 }
 
-unsigned int World::getNbAnimals(){
+unsigned int World::getNbAnimals()const{
   return nbAnimals;
 }
 
-char World::getAnimalType(unsigned int i){
+char World::getAnimalType(unsigned int i)const{
   return vectorAnimals[i]->getType();
 }
 
-int World::getAnimalX(unsigned int i){
+unsigned int World::getAnimalX(unsigned int i)const{
   return vectorAnimals[i]->getX();
 }
 
-int World::getAnimalY(unsigned int i){
+unsigned int World::getAnimalY(unsigned int i)const{
   return vectorAnimals[i]->getY();
 }
 
 void World::spawning(){
-  bool j=true;
+  unsigned int lionRate = 1, gazelleRate = 1, nbGazelles = 0, nbLions = 0;
   for (unsigned int i = 0; i < nbAnimals; i++) {
-    if (j) {
-      vectorAnimals.push_back(new Gazelle());
-    }else{
+    if (nbLions!=lionRate) {
       vectorAnimals.push_back(new Lion());
+      nbLions++;
+    }else if(nbGazelles!=gazelleRate){
+      vectorAnimals.push_back(new Gazelle());
+      nbGazelles++;
     }
-    j = !j;
+    if (nbLions==lionRate && nbGazelles==gazelleRate) {
+      nbLions=0;
+      nbGazelles=0;
+    }
   }
   for (unsigned int i = 0; i < nbAnimals; i++) {
-    vectorAnimals[i]->setX(rand()%MAX_X);
-    vectorAnimals[i]->setY(rand()%MAX_Y);
+    vectorAnimals[i]->setX(rand()%worldX);
+    vectorAnimals[i]->setY(rand()%worldY);
     vectorAnimals[i]->setEnergy(rand()%100);
     tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = vectorAnimals[i]->getType();
   }
@@ -61,8 +71,8 @@ void World::spawning(){
 void World::display(){
   system("clear");
 
-  for (size_t j = 0; j < MAX_Y; j++) {
-    for (size_t i = 0; i < MAX_X; i++){
+  for (size_t j = 0; j < worldY; j++) {
+    for (size_t i = 0; i < worldX; i++){
       std::cout << tabWorld[i][j];
     }
     std::cout << '\n';
@@ -197,14 +207,14 @@ char World::checkForObstacle(short dir, Animal *anim){
       return tabWorld[anim->getX()-1][anim->getY()];
     }
     case 2: //S
-    if (anim->getY()==MAX_Y-1) {
+    if (anim->getY()==worldY-1) {
       break;
     }else{
     // }else if (anim->getType() == 'L' && tabWorld[anim->getX()][anim->getY()+1] == 'G') {
       return tabWorld[anim->getX()][anim->getY()+1];
     }
     case 3: //D
-    if (anim->getX()==MAX_X-1) {
+    if (anim->getX()==worldX-1) {
       break;
     }else{
     // }else if (anim->getType() == 'L' && tabWorld[anim->getX()+1][anim->getY()] == 'G') {

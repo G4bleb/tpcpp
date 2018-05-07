@@ -14,8 +14,6 @@ int main(int argc, char *argv[]) {
 	window.move(QApplication::desktop()->screen()->rect().center() - window.rect().center());
   window.show();
 
-  World leMonde(100);
-  leMonde.spawning();
   return app.exec();
 
   // for (;;) {
