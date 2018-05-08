@@ -7,29 +7,37 @@
 #include <QColor>
 #include <QMenuBar>
 #include <QKeySequence>
-// #include <QGroupBox>
+#include <QGroupBox>
 #include <QGraphicsView>
 #include <QTimer>
 #include <QSlider>
 #include <QCheckBox>
+#include <QLabel>
+#include <QSpinBox>
 
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 	public:
 		MainWindow();
-		~MainWindow();
-		// QGroupBox *BuildGroupBoxControle();
+	private:
+		QHBoxLayout * mainLayout;
+	  QFormLayout * formLayout;
+	  QVBoxLayout * secondLayout;
 		QPushButton * startButton;
 		QPushButton * exitButton;
 		Scene *myscene;
 		QGraphicsView *myview;
 		QSlider *tickSlider;
+		QLabel *tickSliderLabel;
 		QCheckBox *fullscreenCheckBox;
-	private:
+		QSpinBox *nbAnimSpinBox;
+		QSpinBox *worldXSpinBox;
+		QSpinBox *worldYSpinBox;
 		QWidget *widget_general;
 		// QMenu *menuFichier;
 	public slots:
+	void slot_tickSlider(int value);
 	void slot_startButton();
   void slot_exitButton();
 	void slot_fullscreenCheckBox(bool state);

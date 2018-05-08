@@ -1,10 +1,9 @@
 #include "Scene.hpp"
 #include "World.hpp"
-Scene::Scene(QObject *parent) : QGraphicsScene(parent){
+Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY) : QGraphicsScene(parent){
   // this->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
   this->setBackgroundBrush(Qt::lightGray);
-
-  sceneWorld = new World(30, 30, 20);
+  sceneWorld = new World(setNbAnimals, setWorldX, setWorldY);
   worldEnded = false;
   sceneWorld->spawning();
 
@@ -22,6 +21,11 @@ Scene::Scene(QObject *parent) : QGraphicsScene(parent){
     this->addItem(graphAnimals[i]);
   }
 
+  population = new QGraphicsTextItem(QString::number(sceneWorld->getNbAnimals()));
+  population->setPos(0,0);
+  population->setScale(1.5);
+  this->addItem(population);
+
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(step()));
 }
@@ -30,7 +34,7 @@ void Scene::step(){
   // std::cout << "update" << '\n';
   if (!worldEnded) {
     worldEnded = !sceneWorld->passeuntour();
-    // sceneWorld->display();
+    sceneWorld->display();
     for (int i = 0; sceneWorld->hasAnimalDied(i);) {
       // std::cout << i << " died" << '\n';
       this->removeItem(graphAnimals[i]);
@@ -40,9 +44,10 @@ void Scene::step(){
     }
     for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
       graphAnimals[i]->setPos(ANIMAL_SIZE*sceneWorld->getAnimalX(i), ANIMAL_SIZE*sceneWorld->getAnimalY(i));
-      this->update();
       // std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
     }
+    population->setPlainText(QString::number(sceneWorld->getNbAnimals()));
+    this->update();
   }else{
     // QApplication::quit();
   }
@@ -51,4 +56,8 @@ void Scene::step(){
 void Scene::startup(int msTickRate){
   // timer->start(17);
   timer->start(msTickRate);
+}
+
+void Scene::setTimerInterval(int setValue){
+  timer->setInterval(setValue);
 }

@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-World::World(int setNbAnimals, int setWorldX, int setWorldY){
+World::World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY){
   victims=0;
   nbAnimals=setNbAnimals;
   worldX=setWorldX;

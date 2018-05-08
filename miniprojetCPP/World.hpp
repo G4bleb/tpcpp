@@ -13,7 +13,7 @@ private:
   std::vector<Animal*> vectorAnimals;
   std::stack<unsigned int> animalsDying;
 public:
-  World(int setNbAnimals, int setWorldX, int setWorldY);
+  World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY);
   unsigned int getWorldX() const;
   unsigned int getWorldY() const;
   unsigned int getVictims() const;
