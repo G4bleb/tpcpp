@@ -10,7 +10,7 @@ Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX,
   this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getWorldX(),ANIMAL_SIZE*sceneWorld->getWorldY());
   this->addRect(this->sceneRect(), QPen(Qt::black), Qt::white);
   // this->addRect(this->sceneRect(), QPen(Qt::black), QBrush(QPixmap("sand.jpg")));
-  std::cout << "getting into for" << '\n';
+  // std::cout << "getting into for" << '\n';
   for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
     if (sceneWorld->getAnimalType(i) == 'L') {
       graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Lion.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
@@ -34,7 +34,7 @@ void Scene::step(){
   // std::cout << "update" << '\n';
   if (!worldEnded) {
     worldEnded = !sceneWorld->passeuntour();
-    sceneWorld->display();
+    // sceneWorld->display();
     for (int i = 0; sceneWorld->hasAnimalDied(i);) {
       // std::cout << i << " died" << '\n';
       this->removeItem(graphAnimals[i]);
