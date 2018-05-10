@@ -35,12 +35,13 @@ Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX,
 }
 
 void Scene::step(){
+  // getchar();
   // std::cout << "update" << '\n';
   if (!worldEnded) {
     worldEnded = !sceneWorld->passeuntour();
     sceneWorld->display();
     for (int i = 0; sceneWorld->hasAnimalDied(i);) {
-      // std::cout << i << " died" << '\n';
+      // std::cout << sceneWorld->getAnimalType(i) << i << " SceneDied" << '\n';
       this->removeItem(graphAnimals[i]);
       // graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));
       // this->update();
@@ -48,13 +49,11 @@ void Scene::step(){
     }
     for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
       graphAnimals[i]->setPos(ANIMAL_SIZE*sceneWorld->getAnimalX(i), ANIMAL_SIZE*sceneWorld->getAnimalY(i));
-      std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
+      // std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
     }
     population->setPlainText(tr("Nombre d'animaux en vie : ")+QString::number(sceneWorld->getNbAnimals()));
     victims->setPlainText(tr(" Nombre d'animaux prédatés : ")+QString::number(sceneWorld->getVictims()));
     this->update();
-
-    // getchar();
   }
 }
 

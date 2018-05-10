@@ -149,7 +149,7 @@ bool World::passeuntour(){
 }
 
 void World::death(const int i){
-  // std::cout << i << " died" << '\n';
+  // std::cout << vectorAnimals[i]->getType() << i << " WorldDied" << '\n';
   animalsDying.push(i);
   tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = 'X';
   vectorAnimals.erase(vectorAnimals.begin()+i);
@@ -163,7 +163,7 @@ void World::eat(const int i){
       vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()+vectorAnimals[j]->getEnergy());
       // std::cout << vectorAnimals[i]->getType() << i <<" ate "<< vectorAnimals[j]->getType() << j << '\n';
 
-      animalsDying.push(i);
+      animalsDying.push(j);
       vectorAnimals.erase(vectorAnimals.begin()+j);
 
       // nbAnimals = static_cast<int>(vectorAnimals.size());
@@ -184,7 +184,6 @@ void World::getEaten(const int i){
 
       // nbAnimals = static_cast<int>(vectorAnimals.size());
       nbAnimals--;
-
       return;
     }
   }
@@ -227,7 +226,7 @@ char World::checkForObstacle(short dir, Animal *anim){
 
 bool World::hasAnimalDied(int &i){
   if (!animalsDying.empty()) {
-    i = animalsDying.top();
+    i = animalsDying.front();
     animalsDying.pop();
     return true;
   }

@@ -1,6 +1,6 @@
 
 #include "Animal.hpp"
-#include <stack>
+#include <queue>
 #ifndef MONDE_H
 #define MONDE_H
 class World{
@@ -11,7 +11,7 @@ private:
   unsigned int victims;
   char** tabWorld;
   std::vector<Animal*> vectorAnimals;
-  std::stack<unsigned int> animalsDying;
+  std::queue<unsigned int> animalsDying;
 public:
   World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY);
   unsigned int getWorldX() const;
