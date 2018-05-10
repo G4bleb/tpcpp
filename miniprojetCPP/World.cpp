@@ -45,8 +45,8 @@ unsigned int World::getAnimalY(unsigned int i)const{
   return vectorAnimals[i]->getY();
 }
 
-void World::spawning(){
-  unsigned int lionRate = 1, gazelleRate = 1, nbGazelles = 0, nbLions = 0;
+void World::spawning(unsigned int lionRate, unsigned int gazelleRate){
+  unsigned int nbGazelles = 0, nbLions = 0;
   for (unsigned int i = 0; i < nbAnimals; i++) {
     if (nbLions!=lionRate) {
       vectorAnimals.push_back(new Lion());
@@ -226,11 +226,10 @@ char World::checkForObstacle(short dir, Animal *anim){
 }
 
 bool World::hasAnimalDied(int &i){
-  if (animalsDying.empty()) {
-    return false;
-  }else{
+  if (!animalsDying.empty()) {
     i = animalsDying.top();
     animalsDying.pop();
     return true;
   }
+  return false;
 }

@@ -1,12 +1,14 @@
 #include "mainWindow.hpp"
 MainWindow::MainWindow() : QMainWindow() {
-  this->setWindowTitle("Lions et gazelles");
+  this->setWindowTitle(tr("Lions et gazelles"));
+  myscene=NULL;
   // le widget dans lequel tout s'affiche
   widget_general = new QWidget;
   // widget_general->resize (1200, 700);
-  mainLayout = new QHBoxLayout;
+  mainLayout = new QVBoxLayout;
   formLayout = new QFormLayout;
   secondLayout = new QVBoxLayout;
+  tickSliderLayout = new QHBoxLayout;
   widget_general->setLayout(mainLayout);
   this->setCentralWidget(widget_general);
   //Construction Slider
@@ -16,6 +18,8 @@ MainWindow::MainWindow() : QMainWindow() {
   tickSlider->setMaximum(750);
   tickSlider->setValue(200);
   tickSliderLabel = new QLabel(tr("Délai boucle : ")+QString::number(tickSlider->value()));
+  tickSliderLayout->addWidget(tickSliderLabel);
+  tickSliderLayout->addWidget(tickSlider);
   //Construction Boutons Start/Quit, case plein écran, Boite config
   startButton = new QPushButton(tr("Début"));
   exitButton = new QPushButton(tr("Quitter"));
@@ -35,9 +39,20 @@ MainWindow::MainWindow() : QMainWindow() {
   worldYSpinBox->setMaximum(2147483647);
   worldYSpinBox->setValue(20);
 
-  formLayout->addRow("Nombre d'animaux",nbAnimSpinBox);
-  formLayout->addRow("Taille du monde en X",worldXSpinBox);
-  formLayout->addRow("Taille du monde en Y",worldYSpinBox);
+  lionRateSpinBox = new QSpinBox();
+  lionRateSpinBox->setMinimum(0);
+  lionRateSpinBox->setMaximum(2147483647);
+  lionRateSpinBox->setValue(1);
+  gazelleRateSpinBox = new QSpinBox();
+  gazelleRateSpinBox->setMinimum(0);
+  gazelleRateSpinBox->setMaximum(2147483647);
+  gazelleRateSpinBox->setValue(1);
+
+  formLayout->addRow(tr("Nombre d'animaux"),nbAnimSpinBox);
+  formLayout->addRow(tr("Taille du monde en X"),worldXSpinBox);
+  formLayout->addRow(tr("Taille du monde en Y"),worldYSpinBox);
+  formLayout->addRow(tr("Ratio de Lions :"), lionRateSpinBox);
+  formLayout->addRow(tr("Ratio de Gazelles :"), gazelleRateSpinBox);
   // configLayout->addStretch(1);
 
   // groupBoxConfig->setLayout(configLayout);
@@ -45,21 +60,16 @@ MainWindow::MainWindow() : QMainWindow() {
 
   formLayout->addRow(startButton);
 
-
   secondLayout->addLayout(formLayout);
 
-  secondLayout->addWidget(tickSliderLabel);
-  secondLayout->addWidget(tickSlider);
+  secondLayout->addLayout(tickSliderLayout);
   secondLayout->addWidget(fullscreenCheckBox);
   secondLayout->addWidget(exitButton);
-
 
   connect(startButton, SIGNAL(clicked()), this, SLOT(slot_startButton()));
   connect(exitButton, SIGNAL(clicked()), this, SLOT(slot_exitButton()));
   connect(tickSlider, SIGNAL(valueChanged(int)),this, SLOT(slot_tickSlider(int)));
   connect(fullscreenCheckBox, SIGNAL(clicked(bool)), this, SLOT(slot_fullscreenCheckBox(bool)));
-
-
 
   // myview->setFixedSize(800, 600);
   // myview->setSceneRect(0, 0, 1200, 700);
@@ -67,13 +77,11 @@ MainWindow::MainWindow() : QMainWindow() {
 
   mainLayout->addLayout(secondLayout, 2);
   // mainLayout->setStretchFactor(formLayout,5);
-
   // this->adjustSize();
-
 }
 
 void MainWindow::slot_startButton(){
-  myscene = new Scene(this, nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value());
+  myscene = new Scene(this, nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(), lionRateSpinBox->value(), gazelleRateSpinBox->value());
   myview = new QGraphicsView(myscene, this);
   mainLayout->addWidget(myview);
   this->showMaximized();
@@ -89,7 +97,9 @@ void MainWindow::slot_exitButton(){
 
 void MainWindow::slot_tickSlider(int value) {
   tickSliderLabel->setText(tr("Délai boucle : ")+QString::number(tickSlider->value()));
-  myscene->setTimerInterval(value);
+  if (myscene) {
+    myscene->setTimerInterval(value);
+  }
 }
 
 void MainWindow::slot_fullscreenCheckBox(bool state) {

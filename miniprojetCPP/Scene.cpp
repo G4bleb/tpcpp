@@ -1,11 +1,11 @@
 #include "Scene.hpp"
 #include "World.hpp"
-Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY) : QGraphicsScene(parent){
+Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY, unsigned int lionRate, unsigned int gazelleRate) : QGraphicsScene(parent){
   // this->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
   this->setBackgroundBrush(Qt::lightGray);
   sceneWorld = new World(setNbAnimals, setWorldX, setWorldY);
   worldEnded = false;
-  sceneWorld->spawning();
+  sceneWorld->spawning(lionRate, gazelleRate);
 
   this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getWorldX(),ANIMAL_SIZE*sceneWorld->getWorldY());
   this->addRect(this->sceneRect(), QPen(Qt::black), Qt::white);
@@ -21,10 +21,14 @@ Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX,
     this->addItem(graphAnimals[i]);
   }
 
-  population = new QGraphicsTextItem(QString::number(sceneWorld->getNbAnimals()));
+  population = new QGraphicsTextItem(tr("Nombre d'animaux en vie : ")+QString::number(sceneWorld->getNbAnimals()));
   population->setPos(0,0);
-  population->setScale(1.5);
+  // population->setScale(1.5);
   this->addItem(population);
+  victims = new QGraphicsTextItem(tr(" Nombre d'animaux prédatés : ")+QString::number(sceneWorld->getNbAnimals()));
+  victims->setPos(population->boundingRect().width(), 0);
+  // victims->setScale(1.5);
+  this->addItem(victims);
 
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(step()));
@@ -34,7 +38,7 @@ void Scene::step(){
   // std::cout << "update" << '\n';
   if (!worldEnded) {
     worldEnded = !sceneWorld->passeuntour();
-    // sceneWorld->display();
+    sceneWorld->display();
     for (int i = 0; sceneWorld->hasAnimalDied(i);) {
       // std::cout << i << " died" << '\n';
       this->removeItem(graphAnimals[i]);
@@ -44,12 +48,13 @@ void Scene::step(){
     }
     for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
       graphAnimals[i]->setPos(ANIMAL_SIZE*sceneWorld->getAnimalX(i), ANIMAL_SIZE*sceneWorld->getAnimalY(i));
-      // std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
+      std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
     }
-    population->setPlainText(QString::number(sceneWorld->getNbAnimals()));
+    population->setPlainText(tr("Nombre d'animaux en vie : ")+QString::number(sceneWorld->getNbAnimals()));
+    victims->setPlainText(tr(" Nombre d'animaux prédatés : ")+QString::number(sceneWorld->getVictims()));
     this->update();
-  }else{
-    // QApplication::quit();
+
+    // getchar();
   }
 }
 
@@ -60,4 +65,11 @@ void Scene::startup(int msTickRate){
 
 void Scene::setTimerInterval(int setValue){
   timer->setInterval(setValue);
+}
+
+unsigned int Scene::getWorldVictims() const{
+  return sceneWorld->getVictims();
+}
+unsigned int Scene::getWorldNbAnimals() const{
+  return sceneWorld->getNbAnimals();
 }

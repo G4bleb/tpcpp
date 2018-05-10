@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
 	public:
 		MainWindow();
 	private:
-		QHBoxLayout * mainLayout;
+		QVBoxLayout * mainLayout;
 	  QFormLayout * formLayout;
 	  QVBoxLayout * secondLayout;
 		QPushButton * startButton;
@@ -29,11 +29,16 @@ class MainWindow : public QMainWindow {
 		Scene *myscene;
 		QGraphicsView *myview;
 		QSlider *tickSlider;
+		QHBoxLayout *tickSliderLayout;
 		QLabel *tickSliderLabel;
 		QCheckBox *fullscreenCheckBox;
 		QSpinBox *nbAnimSpinBox;
 		QSpinBox *worldXSpinBox;
 		QSpinBox *worldYSpinBox;
+		QSpinBox *lionRateSpinBox;
+		QSpinBox *gazelleRateSpinBox;
+		// QLabel *nbAnimalsLabel;
+		// QLabel *victimsLabel;
 		QWidget *widget_general;
 		// QMenu *menuFichier;
 	public slots:

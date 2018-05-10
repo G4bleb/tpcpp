@@ -21,7 +21,7 @@ public:
   char getAnimalType(unsigned int i) const;
   unsigned int getAnimalX(unsigned int i) const;
   unsigned int getAnimalY(unsigned int i) const;
-  void spawning();
+  void spawning(unsigned int lionRate = 1, unsigned int gazelleRate = 1);
   void display();
   bool move(int i);
   bool passeuntour();
