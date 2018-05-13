@@ -9,9 +9,11 @@ private:
   unsigned int worldY;
   unsigned int nbAnimals;
   unsigned int victims;
+  unsigned int startingLife;
   char** tabWorld;
   std::vector<Animal*> vectorAnimals;
   std::queue<unsigned int> animalsDying;
+  std::queue<Animal*> animalsBeingBorn;
 public:
   World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY);
   unsigned int getWorldX() const;
@@ -21,14 +23,16 @@ public:
   char getAnimalType(unsigned int i) const;
   unsigned int getAnimalX(unsigned int i) const;
   unsigned int getAnimalY(unsigned int i) const;
-  void spawning(unsigned int lionRate = 1, unsigned int gazelleRate = 1);
+  void spawning(unsigned int lionRate = 1, unsigned int gazelleRate = 1, unsigned int initStartingLife = 100);
   void display();
-  bool move(int i);
+  bool move(unsigned int i);
   bool passeuntour();
-  void death(const int i);
+  void death(const unsigned int i);
+  void reproduceIfPossible(const unsigned int i);
   bool hasAnimalDied(int &i);
-  void eat(const int i);
-  void getEaten(const int i);
+  bool isAnimalBorn(Animal* &newBorn);
+  void eat(const unsigned int i);
+  void getEaten(const unsigned int i);
   char checkForObstacle(short dir, Animal *anim);
 };
 #endif

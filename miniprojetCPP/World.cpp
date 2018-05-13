@@ -45,8 +45,9 @@ unsigned int World::getAnimalY(unsigned int i)const{
   return vectorAnimals[i]->getY();
 }
 
-void World::spawning(unsigned int lionRate, unsigned int gazelleRate){
+void World::spawning(unsigned int lionRate, unsigned int gazelleRate, unsigned int initStartingLife){
   unsigned int nbGazelles = 0, nbLions = 0;
+  startingLife = initStartingLife;
   for (unsigned int i = 0; i < nbAnimals; i++) {
     if (nbLions!=lionRate) {
       vectorAnimals.push_back(new Lion());
@@ -63,7 +64,7 @@ void World::spawning(unsigned int lionRate, unsigned int gazelleRate){
   for (unsigned int i = 0; i < nbAnimals; i++) {
     vectorAnimals[i]->setX(rand()%worldX);
     vectorAnimals[i]->setY(rand()%worldY);
-    vectorAnimals[i]->setEnergy(rand()%100);
+    vectorAnimals[i]->setEnergy(startingLife);
     tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = vectorAnimals[i]->getType();
   }
 }
@@ -81,46 +82,48 @@ void World::display(){
   // getchar();
 }
 
-bool World::move(const int i){
+bool World::move(const unsigned int i){
   bool nourri = false;
   vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()-1);
   switch (rand()%4) {
     case 0: //Z
-      if (checkForObstacle(0, vectorAnimals[i])) {
-        tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
-        vectorAnimals[i]->setY(vectorAnimals[i]->getY()-1);
-      }
+    if (checkForObstacle(0, vectorAnimals[i])) {
+      tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
+      vectorAnimals[i]->setY(vectorAnimals[i]->getY()-1);
+    }
     break;
     case 1: //Q
-      if (checkForObstacle(1, vectorAnimals[i])) {
-        tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
-        vectorAnimals[i]->setX(vectorAnimals[i]->getX()-1);
-      }
+    if (checkForObstacle(1, vectorAnimals[i])) {
+      tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
+      vectorAnimals[i]->setX(vectorAnimals[i]->getX()-1);
+    }
 
     break;
     case 2: //S
-      if (checkForObstacle(2, vectorAnimals[i])) {
-        tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
-        vectorAnimals[i]->setY(vectorAnimals[i]->getY()+1);
-      }
+    if (checkForObstacle(2, vectorAnimals[i])) {
+      tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
+      vectorAnimals[i]->setY(vectorAnimals[i]->getY()+1);
+    }
     break;
     case 3: //D
-      if (checkForObstacle(3, vectorAnimals[i])) {
-        tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
-        vectorAnimals[i]->setX(vectorAnimals[i]->getX()+1);
-      }
+    if (checkForObstacle(3, vectorAnimals[i])) {
+      tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = ' ';
+      vectorAnimals[i]->setX(vectorAnimals[i]->getX()+1);
+    }
     break;
   }
   if (vectorAnimals[i]->getType() == 'L' && tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] == 'G') {
     // std::cout << vectorAnimals[i]->getType() << i <<" is going to eat" << '\n';
     eat(i);
     nourri = true;
-  }else{
-    if (vectorAnimals[i]->getType() == 'G' && tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] == 'L') {
-      // std::cout << vectorAnimals[i]->getType() << i <<" is going to be eaten" << '\n';
-      getEaten(i);
-      nourri = true;
-    }
+  }else if (vectorAnimals[i]->getType() == 'G' && tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] == 'L') {
+    // std::cout << vectorAnimals[i]->getType() << i <<" is going to be eaten" << '\n';
+    getEaten(i);
+    nourri = true;
+  }else if (vectorAnimals[i]->getType() == tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()]){
+    //reproduction
+    std::cout << vectorAnimals[i]->getType() << i << " wants to mate" << '\n';
+    // reproduceIfPossible(i);
   }
   tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = vectorAnimals[i]->getType();
   // std::cout << "matrixMoved : " << vectorAnimals[i]->getType() << i << " to " << vectorAnimals[i]->getX() << ", "<< vectorAnimals[i]->getY() << '\n';
@@ -148,7 +151,7 @@ bool World::passeuntour(){
   return true;
 }
 
-void World::death(const int i){
+void World::death(const unsigned int i){
   // std::cout << vectorAnimals[i]->getType() << i << " WorldDied" << '\n';
   animalsDying.push(i);
   tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = 'X';
@@ -157,7 +160,7 @@ void World::death(const int i){
   nbAnimals--;
 }
 
-void World::eat(const int i){
+void World::eat(const unsigned int i){
   for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimals); j++) {
     if (vectorAnimals[j]->getType() == 'G' && vectorAnimals[j]->getX() == vectorAnimals[i]->getX() && vectorAnimals[j]->getY() == vectorAnimals[i]->getY()) {
       vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()+vectorAnimals[j]->getEnergy());
@@ -173,7 +176,7 @@ void World::eat(const int i){
   }
 }
 
-void World::getEaten(const int i){
+void World::getEaten(const unsigned int i){
   for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimals); j++) {
     if (vectorAnimals[j]->getType() == 'L' && vectorAnimals[j]->getX() == vectorAnimals[i]->getX() && vectorAnimals[j]->getY() == vectorAnimals[i]->getY()) {
       vectorAnimals[j]->setEnergy(vectorAnimals[i]->getEnergy()+vectorAnimals[j]->getEnergy());
@@ -189,34 +192,62 @@ void World::getEaten(const int i){
   }
 }
 
+void World::reproduceIfPossible(const unsigned int i){
+  for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimals); j++) {
+    if (i==j) {
+      j++;
+    }
+    if (vectorAnimals[j]->getType() == vectorAnimals[i]->getType() && vectorAnimals[j]->getX() == vectorAnimals[i]->getX() && vectorAnimals[j]->getY() == vectorAnimals[i]->getY()) {
+      if (vectorAnimals[j]->getEnergy() > startingLife/4 && vectorAnimals[i]->getEnergy() > startingLife/4) { //TODO
+        std::cout << vectorAnimals[i]->getType() << i <<" and "<< vectorAnimals[j]->getType() << j << " mated" << '\n';
+        if (vectorAnimals[i]->getType()=='L') {
+          vectorAnimals.push_back(new Lion());
+        }else{
+          vectorAnimals.push_back(new Gazelle());
+        }
+        vectorAnimals.back()->setX(vectorAnimals[j]->getX());
+        vectorAnimals.back()->setY(vectorAnimals[j]->getY());
+        vectorAnimals.back()->setEnergy(startingLife/2);
+
+        vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()-startingLife/4);
+        vectorAnimals[j]->setEnergy(vectorAnimals[j]->getEnergy()-startingLife/4);
+
+        animalsBeingBorn.push(vectorAnimals.back());
+        nbAnimals++;
+        return;
+      }
+    }
+  }
+}
+
 char World::checkForObstacle(short dir, Animal *anim){
   switch (dir) {
     case 0: //Z
     if (anim->getY()==0) {
       break;
     }else{
-    // }else if(anim->getType() == 'L' && tabWorld[anim->getX()][anim->getY()-1] == 'G'){
+      // }else if(anim->getType() == 'L' && tabWorld[anim->getX()][anim->getY()-1] == 'G'){
       return tabWorld[anim->getX()][anim->getY()-1];
     }
     case 1: //Q
     if (anim->getX()==0) {
       break;
     }else{
-    // }else if (anim->getType() == 'L' && tabWorld[anim->getX()-1][anim->getY()] == 'G') {
+      // }else if (anim->getType() == 'L' && tabWorld[anim->getX()-1][anim->getY()] == 'G') {
       return tabWorld[anim->getX()-1][anim->getY()];
     }
     case 2: //S
     if (anim->getY()==worldY-1) {
       break;
     }else{
-    // }else if (anim->getType() == 'L' && tabWorld[anim->getX()][anim->getY()+1] == 'G') {
+      // }else if (anim->getType() == 'L' && tabWorld[anim->getX()][anim->getY()+1] == 'G') {
       return tabWorld[anim->getX()][anim->getY()+1];
     }
     case 3: //D
     if (anim->getX()==worldX-1) {
       break;
     }else{
-    // }else if (anim->getType() == 'L' && tabWorld[anim->getX()+1][anim->getY()] == 'G') {
+      // }else if (anim->getType() == 'L' && tabWorld[anim->getX()+1][anim->getY()] == 'G') {
       return tabWorld[anim->getX()+1][anim->getY()];
     }
     break;
@@ -228,6 +259,15 @@ bool World::hasAnimalDied(int &i){
   if (!animalsDying.empty()) {
     i = animalsDying.front();
     animalsDying.pop();
+    return true;
+  }
+  return false;
+}
+
+bool World::isAnimalBorn(Animal* &newBorn){
+  if (!animalsBeingBorn.empty()) {
+    newBorn = animalsBeingBorn.front();
+    animalsBeingBorn.pop();
     return true;
   }
   return false;

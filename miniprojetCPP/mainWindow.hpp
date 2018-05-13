@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow {
 		QSpinBox *worldYSpinBox;
 		QSpinBox *lionRateSpinBox;
 		QSpinBox *gazelleRateSpinBox;
+		QSpinBox *lifeSpinBox;
 		// QLabel *nbAnimalsLabel;
 		// QLabel *victimsLabel;
 		QWidget *widget_general;

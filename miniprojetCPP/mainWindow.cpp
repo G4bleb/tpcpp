@@ -47,12 +47,17 @@ MainWindow::MainWindow() : QMainWindow() {
   gazelleRateSpinBox->setMinimum(0);
   gazelleRateSpinBox->setMaximum(2147483647);
   gazelleRateSpinBox->setValue(1);
+  lifeSpinBox = new QSpinBox();
+  lifeSpinBox->setMinimum(0);
+  lifeSpinBox->setMaximum(2147483647);
+  lifeSpinBox->setValue(100);
 
   formLayout->addRow(tr("Nombre d'animaux"),nbAnimSpinBox);
   formLayout->addRow(tr("Taille du monde en X"),worldXSpinBox);
   formLayout->addRow(tr("Taille du monde en Y"),worldYSpinBox);
   formLayout->addRow(tr("Ratio de Lions :"), lionRateSpinBox);
   formLayout->addRow(tr("Ratio de Gazelles :"), gazelleRateSpinBox);
+  formLayout->addRow(tr("Energie initiale :"), lifeSpinBox);
   // configLayout->addStretch(1);
 
   // groupBoxConfig->setLayout(configLayout);
@@ -81,7 +86,7 @@ MainWindow::MainWindow() : QMainWindow() {
 }
 
 void MainWindow::slot_startButton(){
-  myscene = new Scene(this, nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(), lionRateSpinBox->value(), gazelleRateSpinBox->value());
+  myscene = new Scene(this, nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(), lionRateSpinBox->value(), gazelleRateSpinBox->value(), lifeSpinBox->value());
   myview = new QGraphicsView(myscene, this);
   mainLayout->addWidget(myview);
   this->showMaximized();
