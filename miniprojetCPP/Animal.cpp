@@ -1,7 +1,7 @@
 #include "Animal.hpp"
 using namespace std;
 
-Animal::Animal(int initx, int inity, int initEnergy){
+Animal::Animal(const unsigned int initx, const unsigned int inity, const unsigned int initEnergy){
   x=initx;
   y=inity;
   energy=initEnergy;

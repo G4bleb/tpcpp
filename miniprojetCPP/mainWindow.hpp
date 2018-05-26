@@ -18,34 +18,37 @@
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
-	public:
-		MainWindow();
-	private:
-		QVBoxLayout * mainLayout;
-	  QFormLayout * formLayout;
-	  QVBoxLayout * secondLayout;
-		QPushButton * startButton;
-		QPushButton * exitButton;
-		Scene *myscene;
-		QGraphicsView *myview;
-		QSlider *tickSlider;
-		QHBoxLayout *tickSliderLayout;
-		QLabel *tickSliderLabel;
-		QCheckBox *fullscreenCheckBox;
-		QSpinBox *nbAnimSpinBox;
-		QSpinBox *worldXSpinBox;
-		QSpinBox *worldYSpinBox;
-		QSpinBox *lionRateSpinBox;
-		QSpinBox *gazelleRateSpinBox;
-		QSpinBox *lifeSpinBox;
-		// QLabel *nbAnimalsLabel;
-		// QLabel *victimsLabel;
-		QWidget *widget_general;
-		// QMenu *menuFichier;
+public:
+	MainWindow();
+private:
+	QVBoxLayout * mainLayout;
+	QFormLayout * formLayout;
+	QVBoxLayout * secondLayout;
+	QPushButton * startButton;
+	QPushButton * exitButton;
+	Scene *myscene;
+	QGraphicsView *myview;
+	QSlider *tickSlider;
+	QHBoxLayout *tickSliderLayout;
+	QLabel *tickSliderLabel;
+	QCheckBox *fullscreenCheckBox;
+	QSpinBox *nbAnimSpinBox;
+	QSpinBox *worldXSpinBox;
+	QSpinBox *worldYSpinBox;
+	QSpinBox *lionRateSpinBox;
+	QSpinBox *gazelleRateSpinBox;
+	QSpinBox *lifeSpinBox;
+	QSpinBox *healthThresholdSpinBox;
+	QSpinBox *birthHealthSpinBox;
+	QSpinBox *birthCostSpinBox;
+	// QLabel *nbAnimalsLabel;
+	// QLabel *victimsLabel;
+	QWidget *widget_general;
+	// QMenu *menuFichier;
 	public slots:
 	void slot_tickSlider(int value);
 	void slot_startButton();
-  void slot_exitButton();
+	void slot_exitButton();
 	void slot_fullscreenCheckBox(bool state);
 };
 

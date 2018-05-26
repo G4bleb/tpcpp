@@ -42,6 +42,7 @@ void Scene::step(){
     // sceneWorld->display();
     for (Animal *newBorn = NULL; sceneWorld->isAnimalBorn(newBorn);) {
       graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Gazelle.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
+      this->addItem(graphAnimals.back());
       graphAnimals.back()->setPos(ANIMAL_SIZE*newBorn->getX(), ANIMAL_SIZE*newBorn->getY());
       // std::cout << sceneWorld->getAnimalType(i) << i << " SceneDied" << '\n';
       // graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));

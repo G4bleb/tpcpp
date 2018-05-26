@@ -6,7 +6,7 @@ using namespace std;
 class Animal {
 public:
   // Animal();
-  Animal(int initx = 0, int inity=0, int initEnergy=100);
+  Animal(const unsigned int initx = 0, const unsigned int inity=0, const unsigned int initEnergy=100);
   ~Animal();
   unsigned int getX() const;
   unsigned int getY() const;
