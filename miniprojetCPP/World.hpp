@@ -10,12 +10,15 @@ private:
   unsigned int nbAnimals;
   unsigned int victims;
   unsigned int startingLife;
+  unsigned int healthThreshold;
+  unsigned int birthHealth;
+  unsigned int birthCost;
   char** tabWorld;
   std::vector<Animal*> vectorAnimals;
   std::queue<unsigned int> animalsDying;
   std::queue<Animal*> animalsBeingBorn;
 public:
-  World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY);
+  World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY,  unsigned int setHealthThreshold, unsigned int setBirthHealth, unsigned int setBirthCost);
   unsigned int getWorldX() const;
   unsigned int getWorldY() const;
   unsigned int getVictims() const;

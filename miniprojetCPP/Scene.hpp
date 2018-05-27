@@ -7,7 +7,7 @@
 class Scene : public QGraphicsScene {
 	Q_OBJECT
 	public:
-		Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY, unsigned int lionRate, unsigned int gazelleRate, unsigned int startingLife);
+		Scene(QObject *parent, unsigned int parameters[]);
 		void displayAnimals();
 		void startup(int msTickRate);
 		void setTimerInterval(int setValue);

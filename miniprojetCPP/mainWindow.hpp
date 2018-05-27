@@ -50,6 +50,7 @@ private:
 	void slot_startButton();
 	void slot_exitButton();
 	void slot_fullscreenCheckBox(bool state);
+	void slot_healthThresholdSpinBox(int value);
 };
 
 #endif

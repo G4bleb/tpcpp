@@ -1,11 +1,17 @@
 #include "Scene.hpp"
 #include "World.hpp"
-Scene::Scene(QObject *parent, unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY, unsigned int lionRate, unsigned int gazelleRate, unsigned int startingLife) : QGraphicsScene(parent){
+Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent){
+  // setNbAnimals
+  // setWorldX
+  // setWorldY
+  // lionRate
+  // gazelleRate
+  // startingLife
   // this->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
   this->setBackgroundBrush(Qt::lightGray);
-  sceneWorld = new World(setNbAnimals, setWorldX, setWorldY);
+  sceneWorld = new World(parameters[0], parameters[1], parameters[2], parameters[6], parameters[7], parameters[8]);
   worldEnded = false;
-  sceneWorld->spawning(lionRate, gazelleRate, startingLife);
+  sceneWorld->spawning(parameters[3], parameters[4], parameters[5]);
 
   this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getWorldX(),ANIMAL_SIZE*sceneWorld->getWorldY());
   this->addRect(this->sceneRect(), QPen(Qt::black), Qt::white);

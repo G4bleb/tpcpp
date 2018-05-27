@@ -2,11 +2,14 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-World::World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY){
+World::World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY,  unsigned int setHealthThreshold, unsigned int setBirthHealth, unsigned int setBirthCost){
   victims=0;
   nbAnimals=setNbAnimals;
   worldX=setWorldX;
   worldY=setWorldY;
+  healthThreshold = setHealthThreshold/100;
+  birthHealth = setBirthHealth/100;
+  birthCost = setBirthCost/100;
 
   tabWorld = new char*[worldX];
   for (size_t j = 0; j < worldX; j++) {
@@ -211,7 +214,7 @@ void World::reproduceIfPossible(const unsigned int i){
         std::cout << vectorAnimals[i]->getType() << i <<" is with "<< vectorAnimals[j]->getType() << j << '\n';
         std::cout << vectorAnimals[i]->getType() << i << " HP : " << vectorAnimals[i]->getEnergy() << '\n';
         std::cout << vectorAnimals[j]->getType() << j << " HP : " << vectorAnimals[j]->getEnergy() << '\n';
-        if (vectorAnimals[j]->getEnergy() > startingLife/4 && vectorAnimals[i]->getEnergy() > startingLife/4) {
+        if (vectorAnimals[j]->getEnergy() > startingLife*healthThreshold && vectorAnimals[i]->getEnergy() > startingLife*healthThreshold) {
           std::cout << vectorAnimals[i]->getType() << i <<" and "<< vectorAnimals[j]->getType() << j << " mated" << '\n';
 
           if (vectorAnimals[i]->getType()=='L') {
@@ -221,10 +224,10 @@ void World::reproduceIfPossible(const unsigned int i){
           }
           vectorAnimals.back()->setX(vectorAnimals[j]->getX());
           vectorAnimals.back()->setY(vectorAnimals[j]->getY());
-          vectorAnimals.back()->setEnergy(startingLife/2);
+          vectorAnimals.back()->setEnergy(startingLife*birthHealth);
 
-          vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()-startingLife/8);
-          vectorAnimals[j]->setEnergy(vectorAnimals[j]->getEnergy()-startingLife/8);
+          vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()-startingLife*birthCost);
+          vectorAnimals[j]->setEnergy(vectorAnimals[j]->getEnergy()-startingLife*birthCost);
 
           animalsBeingBorn.push(vectorAnimals.back());
           nbAnimals++;

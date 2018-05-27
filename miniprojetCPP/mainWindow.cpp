@@ -58,11 +58,11 @@ MainWindow::MainWindow() : QMainWindow() {
   birthHealthSpinBox = new QSpinBox();
   birthHealthSpinBox->setMinimum(0);
   birthHealthSpinBox->setMaximum(100);
-  birthHealthSpinBox->setValue(25);
+  birthHealthSpinBox->setValue(50);
   birthCostSpinBox = new QSpinBox();
   birthCostSpinBox->setMinimum(0);
-  birthCostSpinBox->setMaximum(100);
-  birthCostSpinBox->setValue(25);
+  birthCostSpinBox->setMaximum(healthThresholdSpinBox->value());
+  birthCostSpinBox->setValue(20);
 
   formLayout->addRow(tr("Nombre d'animaux"),nbAnimSpinBox);
   formLayout->addRow(tr("Taille du monde en X"),worldXSpinBox);
@@ -70,9 +70,9 @@ MainWindow::MainWindow() : QMainWindow() {
   formLayout->addRow(tr("Ratio de Lions :"), lionRateSpinBox);
   formLayout->addRow(tr("Ratio de Gazelles :"), gazelleRateSpinBox);
   formLayout->addRow(tr("Energie initiale :"), lifeSpinBox);
-  formLayout->addRow(tr("Seuil de bonne santé (en %%) :"), healthThresholdSpinBox);
-  formLayout->addRow(tr("Santé du nouveau-né (en %%) :"), birthHealthSpinBox);
-  formLayout->addRow(tr("Cout en santé de la reproduction (en %%) :"), birthCostSpinBox);
+  formLayout->addRow(tr("Seuil de bonne santé (en %) :"), healthThresholdSpinBox);
+  formLayout->addRow(tr("Santé du nouveau-né (en %) :"), birthHealthSpinBox);
+  formLayout->addRow(tr("Cout en santé de la reproduction (en %) :"), birthCostSpinBox);
   // configLayout->addStretch(1);
 
   // groupBoxConfig->setLayout(configLayout);
@@ -90,6 +90,7 @@ MainWindow::MainWindow() : QMainWindow() {
   connect(exitButton, SIGNAL(clicked()), this, SLOT(slot_exitButton()));
   connect(tickSlider, SIGNAL(valueChanged(int)),this, SLOT(slot_tickSlider(int)));
   connect(fullscreenCheckBox, SIGNAL(clicked(bool)), this, SLOT(slot_fullscreenCheckBox(bool)));
+  connect(healthThresholdSpinBox, SIGNAL(valueChanged(int)), this, SLOT(slot_healthThresholdSpinBox(int)));
 
   // myview->setFixedSize(800, 600);
   // myview->setSceneRect(0, 0, 1200, 700);
@@ -102,9 +103,13 @@ MainWindow::MainWindow() : QMainWindow() {
 
 void MainWindow::slot_startButton(){
   //TODO put it in an array
-  myscene = new Scene(this, nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(),
-   lionRateSpinBox->value(), gazelleRateSpinBox->value(), lifeSpinBox->value(),
-    healthThresholdSpinBox->value(), birthHealthSpinBox->value(), birthCostSpinBox->value());
+  int signedParameters[] = {nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(), lionRateSpinBox->value(), gazelleRateSpinBox->value(), lifeSpinBox->value(), healthThresholdSpinBox->value(), birthHealthSpinBox->value(), birthCostSpinBox->value()};
+  unsigned int nbParameters = sizeof(signedParameters);
+  unsigned int parameters[nbParameters];
+  for (unsigned int i = 0; i < 9; i++) {
+    parameters[i] = static_cast<unsigned int>(signedParameters[i]);
+  }
+  myscene = new Scene(this, parameters);
   myview = new QGraphicsView(myscene, this);
   mainLayout->addWidget(myview);
   this->showMaximized();
@@ -134,4 +139,8 @@ void MainWindow::slot_fullscreenCheckBox(bool state) {
     // this->showNormal();
     this->showMaximized();
   }
+}
+
+void MainWindow::slot_healthThresholdSpinBox(int value) {
+  birthCostSpinBox->setMaximum(value);
 }
