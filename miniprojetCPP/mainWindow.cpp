@@ -43,10 +43,12 @@ MainWindow::MainWindow() : QMainWindow() {
   lionRateSpinBox->setMinimum(0);
   lionRateSpinBox->setMaximum(2147483647);
   lionRateSpinBox->setValue(1);
+  lionRateSpinBox->setSuffix(" lion");
   gazelleRateSpinBox = new QSpinBox();
   gazelleRateSpinBox->setMinimum(0);
   gazelleRateSpinBox->setMaximum(2147483647);
   gazelleRateSpinBox->setValue(1);
+  gazelleRateSpinBox->setSuffix(" gazelle");
   lifeSpinBox = new QSpinBox();
   lifeSpinBox->setMinimum(0);
   lifeSpinBox->setMaximum(2147483647);
@@ -55,14 +57,17 @@ MainWindow::MainWindow() : QMainWindow() {
   healthThresholdSpinBox->setMinimum(0);
   healthThresholdSpinBox->setMaximum(100);
   healthThresholdSpinBox->setValue(25);
+  healthThresholdSpinBox->setSuffix(" %");
   birthHealthSpinBox = new QSpinBox();
   birthHealthSpinBox->setMinimum(0);
   birthHealthSpinBox->setMaximum(100);
   birthHealthSpinBox->setValue(50);
+  birthHealthSpinBox->setSuffix(" %");
   birthCostSpinBox = new QSpinBox();
   birthCostSpinBox->setMinimum(0);
   birthCostSpinBox->setMaximum(healthThresholdSpinBox->value());
   birthCostSpinBox->setValue(20);
+  birthCostSpinBox->setSuffix(" %");
 
   formLayout->addRow(tr("Nombre d'animaux"),nbAnimSpinBox);
   formLayout->addRow(tr("Taille du monde en X"),worldXSpinBox);
@@ -70,9 +75,9 @@ MainWindow::MainWindow() : QMainWindow() {
   formLayout->addRow(tr("Ratio de Lions :"), lionRateSpinBox);
   formLayout->addRow(tr("Ratio de Gazelles :"), gazelleRateSpinBox);
   formLayout->addRow(tr("Energie initiale :"), lifeSpinBox);
-  formLayout->addRow(tr("Seuil de bonne santé (en %) :"), healthThresholdSpinBox);
-  formLayout->addRow(tr("Santé du nouveau-né (en %) :"), birthHealthSpinBox);
-  formLayout->addRow(tr("Cout en santé de la reproduction (en %) :"), birthCostSpinBox);
+  formLayout->addRow(tr("Seuil de bonne santé :"), healthThresholdSpinBox);
+  formLayout->addRow(tr("Santé du nouveau-né :"), birthHealthSpinBox);
+  formLayout->addRow(tr("Cout en santé de la reproduction :"), birthCostSpinBox);
   // configLayout->addStretch(1);
 
   // groupBoxConfig->setLayout(configLayout);
@@ -102,11 +107,10 @@ MainWindow::MainWindow() : QMainWindow() {
 }
 
 void MainWindow::slot_startButton(){
-  //TODO put it in an array
   int signedParameters[] = {nbAnimSpinBox->value(), worldXSpinBox->value(), worldYSpinBox->value(), lionRateSpinBox->value(), gazelleRateSpinBox->value(), lifeSpinBox->value(), healthThresholdSpinBox->value(), birthHealthSpinBox->value(), birthCostSpinBox->value()};
-  unsigned int nbParameters = sizeof(signedParameters);
+  unsigned int nbParameters = sizeof(signedParameters)/sizeof(int);
   unsigned int parameters[nbParameters];
-  for (unsigned int i = 0; i < 9; i++) {
+  for (unsigned int i = 0; i < nbParameters; i++) {
     parameters[i] = static_cast<unsigned int>(signedParameters[i]);
   }
   myscene = new Scene(this, parameters);
