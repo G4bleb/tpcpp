@@ -8,7 +8,7 @@ MyScene::MyScene(QObject *parent) : QGraphicsScene(parent){
   startTimer = 0;
   scoreCountP1 = 0;
   scoreCountP2 = 0;
-  this->setBackgroundBrush(Qt::black);
+  this->setBackgroundBrush(Qt::darkGray);
   paddleP1 = new QGraphicsPixmapItem(QPixmap("random_gnome.png").scaled(paddleWidth,paddleHeight));
   this->addItem(paddleP1);
   paddleP1->setPos(10+paddleWidth, windowHeight/2-paddleHeight/2);

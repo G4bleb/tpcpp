@@ -10,9 +10,9 @@ private:
   unsigned int nbAnimals;
   unsigned int victims;
   unsigned int startingLife;
-  unsigned int healthThreshold;
-  unsigned int birthHealth;
-  unsigned int birthCost;
+  float healthThreshold;
+  float birthHealth;
+  float birthCost;
   char** tabWorld;
   std::vector<Animal*> vectorAnimals;
   std::queue<unsigned int> animalsDying;
@@ -29,7 +29,7 @@ public:
   void spawning(unsigned int lionRate = 1, unsigned int gazelleRate = 1, unsigned int initStartingLife = 100);
   void display();
   bool move(unsigned int i);
-  bool passeuntour();
+  bool executeTurn();
   void death(const unsigned int i);
   void reproduceIfPossible(const unsigned int i);
   bool hasAnimalDied(int &i);

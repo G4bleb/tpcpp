@@ -1,13 +1,7 @@
 #include "Scene.hpp"
 #include "World.hpp"
 Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent){
-  // setNbAnimals
-  // setWorldX
-  // setWorldY
-  // lionRate
-  // gazelleRate
-  // startingLife
-  // this->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
+
   this->setBackgroundBrush(Qt::lightGray);
   sceneWorld = new World(parameters[0], parameters[1], parameters[2], parameters[6], parameters[7], parameters[8]);
   worldEnded = false;
@@ -44,10 +38,14 @@ void Scene::step(){
   // getchar();
   // std::cout << "update" << '\n';
   if (!worldEnded) {
-    worldEnded = !sceneWorld->passeuntour();
+    worldEnded = !sceneWorld->executeTurn();
     // sceneWorld->display();
     for (Animal *newBorn = NULL; sceneWorld->isAnimalBorn(newBorn);) {
-      graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Gazelle.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
+      if (newBorn->getType()=='L') {
+        graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Lion.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
+      }else{
+        graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Gazelle.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
+      }
       this->addItem(graphAnimals.back());
       graphAnimals.back()->setPos(ANIMAL_SIZE*newBorn->getX(), ANIMAL_SIZE*newBorn->getY());
       // std::cout << sceneWorld->getAnimalType(i) << i << " SceneDied" << '\n';

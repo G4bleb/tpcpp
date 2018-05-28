@@ -15,13 +15,4 @@ int main(int argc, char *argv[]) {
   window.show();
 
   return app.exec();
-
-  // for (;;) {
-  //   leMonde.display();
-  //   if (!leMonde.passeuntour()) {
-  //     leMonde.display();
-  //     std::cout << "Victimes : "<< leMonde.getVictims() << std::endl;
-  //     return 0;
-  //   }
-  // }
 }

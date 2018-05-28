@@ -6,8 +6,6 @@
 #include <QDebug>
 #include <QColor>
 #include <QMenuBar>
-#include <QKeySequence>
-#include <QGroupBox>
 #include <QGraphicsView>
 #include <QTimer>
 #include <QSlider>

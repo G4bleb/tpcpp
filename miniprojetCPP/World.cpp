@@ -2,19 +2,34 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
+
+//==============================================================================
+// Fonction : World::World()
+// Rôle : Constructeur de World
+// Entrée : unsigned int setNbAnimals,
+//          unsigned int setWorldX,
+//          unsigned int setWorldY,
+//          unsigned int setHealthThreshold,
+//          unsigned int setBirthHealth,
+//          unsigned int setBirthCost
+// Entrée/sortie : non
+// Sortie : non
+// Return : non
+//==============================================================================
+
 World::World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY,  unsigned int setHealthThreshold, unsigned int setBirthHealth, unsigned int setBirthCost){
   victims=0;
   nbAnimals=setNbAnimals;
   worldX=setWorldX;
   worldY=setWorldY;
-  healthThreshold = setHealthThreshold/100;
-  birthHealth = setBirthHealth/100;
-  birthCost = setBirthCost/100;
+  healthThreshold = static_cast<float>(setHealthThreshold)/100; //Conversion des pourcentages en coefficients
+  birthHealth = static_cast<float>(setBirthHealth)/100; //Conversion des pourcentages en coefficients
+  birthCost =static_cast<float> (setBirthCost)/100; //Conversion des pourcentages en coefficients
 
   tabWorld = new char*[worldX];
-  for (size_t j = 0; j < worldX; j++) {
+  for (unsigned int j = 0; j < worldX; j++) {
     tabWorld[j] = new char[worldY];
-    for (size_t i = 0; i < worldY; i++) {
+    for (unsigned int i = 0; i < worldY; i++) {
       tabWorld[j][i] = ' ';
     }
   }
@@ -47,6 +62,17 @@ unsigned int World::getAnimalX(unsigned int i)const{
 unsigned int World::getAnimalY(unsigned int i)const{
   return vectorAnimals[i]->getY();
 }
+
+//==============================================================================
+// Fonction : World::spawning()
+// Rôle : Apparition des animaux
+// Entrée : unsigned int lionRate : Ratio de lions
+//          unsigned int gazelleRate : Ratio de gazelles
+//          unsigned int initStartingLife : Santé initiale des animaux
+// Entrée/sortie : non
+// Sortie : non
+// Return : non
+//==============================================================================
 
 void World::spawning(unsigned int lionRate, unsigned int gazelleRate, unsigned int initStartingLife){
   unsigned int nbGazelles = 0, nbLions = 0;
@@ -85,6 +111,15 @@ void World::display(){
   // usleep(80000);
   // getchar();
 }
+
+//==============================================================================
+// Fonction : World::move()
+// Rôle : Déplace l'animal vectorAnimals[i]
+// Entrée : const unsigned int i : Numéro de l'Animal à déplacer
+// Entrée/sortie : non
+// Sortie : non
+// Return : true si l'animal a chassé ou s'est fait chasser
+//==============================================================================
 
 bool World::move(const unsigned int i){
   bool nourri = false;
@@ -146,8 +181,16 @@ bool World::move(const unsigned int i){
   return nourri;
 }
 
-bool World::passeuntour(){
-  std::cout << vectorAnimals[0]->getType() << 0 << " HP : " << vectorAnimals[0]->getEnergy() << '\n';
+//==============================================================================
+// Fonction : World::executeTurn()
+// Rôle : Avance un tour dans le monde
+// Entrée : const unsigned int i : Numéro de l'Animal à déplacer
+// Entrée/sortie : non
+// Sortie : non
+// Return : non
+//==============================================================================
+
+bool World::executeTurn(){
   for (int i = 0; i < static_cast<int>(nbAnimals); i++) {
     if (move(i)) {
       victims++;
@@ -219,6 +262,7 @@ void World::reproduceIfPossible(const unsigned int i){
 
           if (vectorAnimals[i]->getType()=='L') {
             vectorAnimals.push_back(new Lion());
+            std::cout << "is lion" << '\n';
           }else{
             vectorAnimals.push_back(new Gazelle());
           }
