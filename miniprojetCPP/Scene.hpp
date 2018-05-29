@@ -15,14 +15,11 @@ class Scene : public QGraphicsScene {
 	  unsigned int getWorldNbAnimals() const;
 	private:
 		static const int ANIMAL_SIZE = 25;
-
 		World *sceneWorld;
 		bool worldEnded;
-
 		std::vector<QGraphicsPixmapItem*> graphAnimals;
 		QGraphicsTextItem *population;
 		QGraphicsTextItem *victims;
-
 		QTimer *timer;
 	public slots:
 		void step();

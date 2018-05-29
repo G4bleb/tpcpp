@@ -1,6 +1,6 @@
 /*
 
-Programme produit le  par Gabriel LEBIS
+Programme produit le 30/05/2018 par Gabriel LEBIS
 */
 #include "World.hpp"
 #include "mainWindow.hpp"

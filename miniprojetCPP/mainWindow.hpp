@@ -41,7 +41,7 @@ private:
 	QSpinBox *birthCostSpinBox;
 	// QLabel *nbAnimalsLabel;
 	// QLabel *victimsLabel;
-	QWidget *widget_general;
+	QWidget *mainWidget;
 	// QMenu *menuFichier;
 	public slots:
 	void slot_tickSlider(int value);

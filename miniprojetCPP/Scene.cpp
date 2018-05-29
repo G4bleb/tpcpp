@@ -1,16 +1,36 @@
 #include "Scene.hpp"
 #include "World.hpp"
-Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent){
 
+//==============================================================================
+// Fonction : Scene::Scene()
+// Rôle : Constructeur de Scene
+// Entrée : QObject *parent
+//          unsigned int parameters[] : contient, dans cet ordre :
+                                      // nbAnimals
+                                      // worldX
+                                      // worldY
+                                      // lionRate
+                                      // gazelleRate
+                                      // startingLife
+                                      // healthThreshhold
+                                      // bbirthHealth
+                                      // birthCost
+// Entrée/sortie : non
+// Sortie : non
+// Return : non
+//==============================================================================
+
+Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent){
   this->setBackgroundBrush(Qt::lightGray);
+  
   sceneWorld = new World(parameters[0], parameters[1], parameters[2], parameters[6], parameters[7], parameters[8]);
   worldEnded = false;
   sceneWorld->spawning(parameters[3], parameters[4], parameters[5]);
 
   this->setSceneRect(0,0,ANIMAL_SIZE*sceneWorld->getWorldX(),ANIMAL_SIZE*sceneWorld->getWorldY());
-  this->addRect(this->sceneRect(), QPen(Qt::black), Qt::white);
-  // this->addRect(this->sceneRect(), QPen(Qt::black), QBrush(QPixmap("sand.jpg")));
-  // std::cout << "getting into for" << '\n';
+  this->addRect(this->sceneRect(), QPen(Qt::black), QBrush(QPixmap("groundTile.png")));
+
+  //Création initiale de la version graphique du monde
   for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
     if (sceneWorld->getAnimalType(i) == 'L') {
       graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Lion.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
@@ -23,24 +43,30 @@ Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent
 
   population = new QGraphicsTextItem(tr("Nombre d'animaux en vie : ")+QString::number(sceneWorld->getNbAnimals()));
   population->setPos(0,0);
-  // population->setScale(1.5);
   this->addItem(population);
+
   victims = new QGraphicsTextItem(tr(" Nombre d'animaux prédatés : ")+QString::number(sceneWorld->getNbAnimals()));
   victims->setPos(population->boundingRect().width(), 0);
-  // victims->setScale(1.5);
   this->addItem(victims);
 
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(step()));
 }
 
+//==============================================================================
+// Fonction : Scene::step()
+// Rôle : Boucle principale de fonctionnement du programme
+// Entrée : non
+// Entrée/sortie : non
+// Sortie : non
+// Return : non
+//==============================================================================
+
 void Scene::step(){
-  // getchar();
-  // std::cout << "update" << '\n';
   if (!worldEnded) {
     worldEnded = !sceneWorld->executeTurn();
-    // sceneWorld->display();
-    for (Animal *newBorn = NULL; sceneWorld->isAnimalBorn(newBorn);) {
+
+    for (Animal *newBorn = NULL; sceneWorld->isAnimalBorn(newBorn);) {//Naissances
       if (newBorn->getType()=='L') {
         graphAnimals.push_back(new QGraphicsPixmapItem(QPixmap("Lion.png").scaled(ANIMAL_SIZE,ANIMAL_SIZE)));
       }else{
@@ -48,22 +74,17 @@ void Scene::step(){
       }
       this->addItem(graphAnimals.back());
       graphAnimals.back()->setPos(ANIMAL_SIZE*newBorn->getX(), ANIMAL_SIZE*newBorn->getY());
-      // std::cout << sceneWorld->getAnimalType(i) << i << " SceneDied" << '\n';
-      // graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));
-      // this->update();
-      // graphAnimals.erase(graphAnimals.begin()+i);
     }
-    for (int i = 0; sceneWorld->hasAnimalDied(i);) {
-      // std::cout << sceneWorld->getAnimalType(i) << i << " SceneDied" << '\n';
+
+    for (int i = 0; sceneWorld->hasAnimalDied(i);) {//Morts
       this->removeItem(graphAnimals[i]);
-      // graphAnimals[i]->setPixmap(QPixmap("dead.png").scaled(ANIMAL_SIZE, ANIMAL_SIZE));
-      // this->update();
       graphAnimals.erase(graphAnimals.begin()+i);
     }
-    for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
+
+    for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {//Déplacement des animaux à leur positions
       graphAnimals[i]->setPos(ANIMAL_SIZE*sceneWorld->getAnimalX(i), ANIMAL_SIZE*sceneWorld->getAnimalY(i));
-      // std::cout << "graphicMoved : " << sceneWorld->getAnimalType(i) << i << " to " << sceneWorld->getAnimalX(i) << ", "<< sceneWorld->getAnimalY(i) << '\n';
     }
+
     population->setPlainText(tr("Nombre d'animaux en vie : ")+QString::number(sceneWorld->getNbAnimals()));
     victims->setPlainText(tr(" Nombre d'animaux prédatés : ")+QString::number(sceneWorld->getVictims()));
     this->update();
@@ -71,7 +92,6 @@ void Scene::step(){
 }
 
 void Scene::startup(int msTickRate){
-  // timer->start(17);
   timer->start(msTickRate);
 }
 
