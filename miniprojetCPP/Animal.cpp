@@ -7,9 +7,6 @@ Animal::Animal(const unsigned int initx, const unsigned int inity, const unsigne
   energy=initEnergy;
 }
 
-Animal::~Animal(){
-}
-
 unsigned int Animal::getX() const{return x;}
 unsigned int Animal::getY() const{return y;}
 unsigned int Animal::getEnergy() const{return energy;}
@@ -29,6 +26,7 @@ void Lion::display(){
   cout << "Lion : x = " << x << ", y = " << y << "; energy = " << energy << endl;
 }
 char Lion::getType() const{return 'L';}
+
 void Gazelle::display(){
   cout << "Gazelle : x = " << x << ", y = " << y << "; energy = " << energy << endl;
 }

@@ -8,13 +8,14 @@ class Scene : public QGraphicsScene {
 	Q_OBJECT
 	public:
 		Scene(QObject *parent, unsigned int parameters[]);
+		~Scene();
 		void displayAnimals();
 		void startup(int msTickRate);
 		void setTimerInterval(int setValue);
 		unsigned int getWorldVictims() const;
 	  unsigned int getWorldNbAnimals() const;
 	private:
-		static const int ANIMAL_SIZE = 25;
+		static const unsigned int ANIMAL_SIZE = 25;
 		World *sceneWorld;
 		bool worldEnded;
 		std::vector<QGraphicsPixmapItem*> graphAnimals;

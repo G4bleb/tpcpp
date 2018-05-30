@@ -115,7 +115,7 @@ void MainWindow::slot_startButton(){
   this->showMaximized();//Pour rendre l'affichage plus confortable, agrandissement de la fenêtre
   myscene->startup(tickSlider->value());//Démarrage de la boucle
   while (formLayout->rowCount()) {//Effacement du formulaire de paramètres pour la simulation
-    formLayout->removeRow(0);
+    formLayout->removeRow(0);//Fonction introduite dans Qt 5.8
   }
 }
 

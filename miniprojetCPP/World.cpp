@@ -64,6 +64,16 @@ unsigned int World::getAnimalY(unsigned int i)const{
   return vectorAnimals[i]->getY();
 }
 
+World::~World(){
+  for (unsigned int i = 0; i < nbAnimals; i++) {
+    delete vectorAnimals[i];
+  }
+  while (!animalsBeingBorn.empty()) {
+    delete animalsBeingBorn.front();
+    animalsBeingBorn.pop();
+  }
+}
+
 //==============================================================================
 // Fonction : World::spawning()
 // Rôle : Apparition des animaux
@@ -106,7 +116,7 @@ void World::display(){
     for (size_t i = 0; i < worldX; i++){
       std::cout << tabWorld[i][j];
     }
-    std::cout << '\n';
+    std::cout << '\n' << '\n';
   }
   // usleep(20000);
 }
@@ -211,6 +221,7 @@ bool World::executeTurn(){
 void World::death(const unsigned int i){//L'Animal i meurt
   animalsDying.push(i);//L'ajouter aux animaux mourants
   tabWorld[vectorAnimals[i]->getX()][vectorAnimals[i]->getY()] = 'X';
+  delete vectorAnimals[i];
   vectorAnimals.erase(vectorAnimals.begin()+i);//L'effacer du vecteur d'Animaux
   nbAnimals--;
 }
@@ -225,7 +236,7 @@ void World::death(const unsigned int i){//L'Animal i meurt
 //==============================================================================
 
 void World::eat(const unsigned int i){
-  //On cherche quelle Animal (il sera j)va se faire manger par i
+  //On cherche quelle Animal (il sera j) va se faire manger par i
   for (unsigned int j = 0; j < static_cast<unsigned int>(nbAnimals); j++) {
     if (vectorAnimals[j]->getType() == 'G' && vectorAnimals[j]->getX() == vectorAnimals[i]->getX() && vectorAnimals[j]->getY() == vectorAnimals[i]->getY()) {
       vectorAnimals[i]->setEnergy(vectorAnimals[i]->getEnergy()+vectorAnimals[j]->getEnergy());//Le Lion gagne l'énergie de la Gazelle
@@ -257,7 +268,6 @@ void World::getEaten(const unsigned int i){
       animalsDying.push(i);
       vectorAnimals.erase(vectorAnimals.begin()+i);
 
-      // nbAnimals = static_cast<int>(vectorAnimals.size());
       nbAnimals--;
       return;
     }

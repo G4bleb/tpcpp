@@ -15,10 +15,11 @@ private:
   float birthCost;
   char** tabWorld;
   std::vector<Animal*> vectorAnimals;
-  std::queue<unsigned int> animalsDying;
-  std::queue<Animal*> animalsBeingBorn;
+  std::queue<unsigned int> animalsDying;//Buffer d'animaux mourants
+  std::queue<Animal*> animalsBeingBorn;//Buffer d'animaux naissants
 public:
   World(unsigned int setNbAnimals, unsigned int setWorldX, unsigned int setWorldY,  unsigned int setHealthThreshold, unsigned int setBirthHealth, unsigned int setBirthCost);
+  ~World();
   unsigned int getWorldX() const;
   unsigned int getWorldY() const;
   unsigned int getVictims() const;

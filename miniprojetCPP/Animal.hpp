@@ -5,9 +5,8 @@
 using namespace std;
 class Animal {
 public:
-  // Animal();
   Animal(const unsigned int initx = 0, const unsigned int inity=0, const unsigned int initEnergy=100);
-  ~Animal();
+  virtual ~Animal(){}
   unsigned int getX() const;
   unsigned int getY() const;
   unsigned int getEnergy() const;

@@ -3,9 +3,7 @@
 
 #include "Scene.hpp"
 #include <QMainWindow>
-#include <QDebug>
 #include <QColor>
-#include <QMenuBar>
 #include <QGraphicsView>
 #include <QTimer>
 #include <QSlider>
@@ -19,11 +17,13 @@ class MainWindow : public QMainWindow {
 public:
 	MainWindow();
 private:
+	//Layouts
 	QVBoxLayout * mainLayout;
 	QFormLayout * formLayout;
 	QVBoxLayout * secondLayout;
 	QPushButton * startButton;
 	QPushButton * exitButton;
+	QWidget *mainWidget;
 	Scene *myscene;
 	QGraphicsView *myview;
 	QSlider *tickSlider;
@@ -39,10 +39,6 @@ private:
 	QSpinBox *healthThresholdSpinBox;
 	QSpinBox *birthHealthSpinBox;
 	QSpinBox *birthCostSpinBox;
-	// QLabel *nbAnimalsLabel;
-	// QLabel *victimsLabel;
-	QWidget *mainWidget;
-	// QMenu *menuFichier;
 	public slots:
 	void slot_tickSlider(int value);
 	void slot_startButton();

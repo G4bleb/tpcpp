@@ -22,7 +22,7 @@
 
 Scene::Scene(QObject *parent, unsigned int parameters[]) : QGraphicsScene(parent){
   this->setBackgroundBrush(Qt::lightGray);
-  
+
   sceneWorld = new World(parameters[0], parameters[1], parameters[2], parameters[6], parameters[7], parameters[8]);
   worldEnded = false;
   sceneWorld->spawning(parameters[3], parameters[4], parameters[5]);
@@ -104,4 +104,14 @@ unsigned int Scene::getWorldVictims() const{
 }
 unsigned int Scene::getWorldNbAnimals() const{
   return sceneWorld->getNbAnimals();
+}
+
+Scene::~Scene(){
+  for (unsigned int i = 0; i < sceneWorld->getNbAnimals(); i++) {
+    delete graphAnimals[i];
+  }
+  delete sceneWorld;
+  delete population;
+  delete victims;
+  delete timer;
 }
